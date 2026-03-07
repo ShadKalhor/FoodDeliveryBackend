@@ -1,7 +1,7 @@
 package com.example.FoodDeliveryBackend.domain.model;
 
+import com.example.FoodDeliveryBackend.domain.enums.DeliveryStatus;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;

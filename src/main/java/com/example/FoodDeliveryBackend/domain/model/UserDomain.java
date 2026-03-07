@@ -1,5 +1,7 @@
 package com.example.FoodDeliveryBackend.domain.model;
 
+import com.example.FoodDeliveryBackend.domain.enums.Roles;
+import com.example.FoodDeliveryBackend.domain.enums.UserStatus;
 import lombok.Getter;
 import lombok.Setter;
 

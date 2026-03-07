@@ -1,5 +1,7 @@
 package com.example.FoodDeliveryBackend.domain.model;
 
+import com.example.FoodDeliveryBackend.domain.enums.OrderStatus;
+import com.example.FoodDeliveryBackend.domain.enums.PaymentStatus;
 import jakarta.persistence.Embedded;
 import lombok.Getter;
 import lombok.Setter;

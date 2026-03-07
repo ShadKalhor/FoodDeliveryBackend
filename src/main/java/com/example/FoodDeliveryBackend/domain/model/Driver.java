@@ -1,5 +1,6 @@
 package com.example.FoodDeliveryBackend.domain.model;
 
+import com.example.FoodDeliveryBackend.domain.enums.VehicleType;
 import lombok.Getter;
 import lombok.Setter;
 
