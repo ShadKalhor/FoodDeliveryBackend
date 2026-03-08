@@ -18,8 +18,20 @@ public class Delivery {
     private Order order;
     @ManyToOne
     private Driver driver;
+
+    @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "lat", column = @Column(name = "pickupLat")),
+            @AttributeOverride(name = "lng", column = @Column(name = "pickupLng"))
+    })
     private GeoPoint pickupLocation;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "lat", column = @Column(name = "dropoffLat")),
+            @AttributeOverride(name = "lng", column = @Column(name = "dropoffLng"))
+    })
     private GeoPoint dropOffLocation;
 
     private Instant assignedAt;

@@ -2,7 +2,6 @@ package com.example.FoodDeliveryBackend.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 

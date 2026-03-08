@@ -5,6 +5,7 @@ import com.example.FoodDeliveryBackend.domain.model.GeoPoint;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -16,10 +17,12 @@ public class Driver {
     private UUID id;
     @OneToOne
     private User user;
+    @Enumerated(EnumType.STRING)
     private VehicleType vehicleType;
     private boolean isOnline;
+    @Embedded
     private GeoPoint currentLocation;
-    private GeoPoint lastLocationAt;
+    private Instant lastLocationAt;
     private BigDecimal avgRating;
 
 

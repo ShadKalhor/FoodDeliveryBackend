@@ -17,6 +17,7 @@ public class CustomerAddress {
     private User user;
     private String label;
     private String address;
+    @Embedded
     private GeoPoint location;
 
 }

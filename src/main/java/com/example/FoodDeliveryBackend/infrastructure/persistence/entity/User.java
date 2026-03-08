@@ -2,10 +2,7 @@ package com.example.FoodDeliveryBackend.infrastructure.persistence.entity;
 
 import com.example.FoodDeliveryBackend.domain.enums.Roles;
 import com.example.FoodDeliveryBackend.domain.enums.UserStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -17,11 +14,15 @@ public class User {
     @Id
     @GeneratedValue
     private UUID id;
+
+    @Enumerated(EnumType.STRING)
     private Roles role;
     private String name;
     private String phone;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
     private Instant createdAt;
 

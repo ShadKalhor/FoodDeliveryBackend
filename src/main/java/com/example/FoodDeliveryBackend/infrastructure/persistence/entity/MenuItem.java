@@ -21,6 +21,8 @@ public class MenuItem {
     private String description;
     private BigDecimal price;
     private boolean isAvailable;
+
+    @Enumerated(EnumType.STRING)
     private MenuCategories category;
     private String imageUrl;
     private Instant createdAt;
