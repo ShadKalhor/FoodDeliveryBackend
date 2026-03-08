@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class Order {
+public class OrderDomain {
 
     private UUID id;
     private UUID customerId;

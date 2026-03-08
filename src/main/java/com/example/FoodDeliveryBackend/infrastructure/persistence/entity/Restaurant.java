@@ -1,24 +1,24 @@
-package com.example.FoodDeliveryBackend.domain.model;
+package com.example.FoodDeliveryBackend.infrastructure.persistence.entity;
 
-
-import jakarta.persistence.Embedded;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.FoodDeliveryBackend.domain.model.GeoPoint;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "Restaurant")
+public class Restaurant {
 
-@Setter
-@Getter
-public class Resturant {
-
+    @Id
+    @GeneratedValue
     private UUID id;
     private String name;
     private String description;
-    private UUID ownerUserId;
+    @ManyToOne
+    private User ownerUser;
     private String address;
     @Embedded
     private GeoPoint location;
@@ -28,6 +28,5 @@ public class Resturant {
     private BigDecimal minOrderAmount;
     private int avgPrepTimeInMins;
     private Instant createdAt;
-
 
 }

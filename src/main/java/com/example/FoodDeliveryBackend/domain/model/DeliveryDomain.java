@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class Delivery {
+public class DeliveryDomain {
 
     private UUID id;
     private UUID orderId;

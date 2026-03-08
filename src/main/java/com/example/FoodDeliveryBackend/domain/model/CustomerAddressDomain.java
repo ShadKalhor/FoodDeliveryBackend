@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class CustomerAddress {
+public class CustomerAddressDomain {
 
     private UUID id;
     private UUID userId;

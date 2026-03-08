@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class MenuItem {
+public class MenuItemDomain {
     private UUID id;
     private UUID resturantId;
     private String name;

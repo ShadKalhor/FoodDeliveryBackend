@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class OrderItem {
+public class OrderItemDomain {
     private UUID id;
     private UUID orderId;
     private UUID menuItemId;

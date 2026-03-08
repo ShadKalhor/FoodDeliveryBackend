@@ -1,23 +1,26 @@
-package com.example.FoodDeliveryBackend.domain.model;
+package com.example.FoodDeliveryBackend.infrastructure.persistence.entity;
 
 import com.example.FoodDeliveryBackend.domain.enums.VehicleType;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.FoodDeliveryBackend.domain.model.GeoPoint;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-
-@Setter
-@Getter
+@Entity
+@Table(name = "Driver")
 public class Driver {
 
+    @Id
+    @GeneratedValue
     private UUID id;
-    private UUID userId;
+    @OneToOne
+    private User user;
     private VehicleType vehicleType;
     private boolean isOnline;
     private GeoPoint currentLocation;
     private GeoPoint lastLocationAt;
     private BigDecimal avgRating;
+
 
 }
