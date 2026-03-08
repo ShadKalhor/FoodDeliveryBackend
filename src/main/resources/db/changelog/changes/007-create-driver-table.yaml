@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-create-driver-table
+      author: shad
+      changes:
+        - createTable:
+            tableName: Driver
+            columns:
+              - column:
+                  name: id
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+
+              - column:
+                  name: userId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: vehicleType
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: isOnline
+                  type: bit
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: lat
+                  type: decimal(9,6)
+
+              - column:
+                  name: lng
+                  type: decimal(9,6)
+
+              - column:
+                  name: lastLocationAt
+                  type: datetime2
+
+              - column:
+                  name: avgRating
+                  type: decimal(10,2)
+
+        - addForeignKeyConstraint:
+            baseTableName: Driver
+            baseColumnNames: userId
+            referencedTableName: User
+            referencedColumnNames: id
+            constraintName: fk_driver_user
+        - createIndex:
+            tableName: Driver
+            indexName: idx_driver_user
+            columns:
+              - column:
+                  name: userId
+

@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-customer-address-table
+      author: shad
+      changes:
+        - createTable:
+            tableName: CustomerAddress
+            columns:
+              - column:
+                  name: id
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: userId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+              - column:
+                  name: label
+                  type: varchar(100)
+              - column:
+                  name: address
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lat
+                  type: decimal(9,6)
+
+              - column:
+                  name: lng
+                  type: decimal(9,6)
+
+        - addForeignKeyConstraint:
+            baseTableName: CustomerAddress
+            baseColumnNames: userId
+            referencedTableName: User
+            referencedColumnNames: id
+            constraintName: fk_customer_address_user

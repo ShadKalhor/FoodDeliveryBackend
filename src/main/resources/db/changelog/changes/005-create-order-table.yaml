@@ -1,0 +1,135 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-create-Order-table
+      author: shad
+      changes:
+        - createTable:
+            tableName: Orders
+            columns:
+              - column:
+                  name: id
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+
+              - column:
+                  name: customerId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: restaurantId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: deliveryAddressId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: itemsSubtotal
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: deliveryFee
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: serviceFee
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: tax
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: total
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: createdAt
+                  type: datetime2
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: acceptedAt
+                  type: datetime2
+
+              - column:
+                  name: readyAt
+                  type: datetime2
+
+              - column:
+                  name: pickedUpAt
+                  type: datetime2
+
+              - column:
+                  name: deliveredAt
+                  type: datetime2
+
+              - column:
+                  name: cancelledAt
+                  type: datetime2
+
+              - column:
+                  name: paymentStatus
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: Orders
+            baseColumnNames: customerId
+            referencedTableName: User
+            referencedColumnNames: id
+            constraintName: fk_Orders_customer
+
+        - addForeignKeyConstraint:
+            baseTableName: Orders
+            baseColumnNames: restaurantId
+            referencedTableName: Restaurant
+            referencedColumnNames: id
+            constraintName: fk_Orders_restaurant
+
+        - addForeignKeyConstraint:
+            baseTableName: Orders
+            baseColumnNames: deliveryAddressId
+            referencedTableName: CustomerAddress
+            referencedColumnNames: id
+            constraintName: fk_Orders_delivery_address
+
+        - createIndex:
+            tableName: Orders
+            indexName: idx_Orders_customer
+            columns:
+              - column:
+                  name: customerId
+
+        - createIndex:
+            tableName: Orders
+            indexName: idx_Orders_restaurant
+            columns:
+                - column:
+                    name: restaurantId

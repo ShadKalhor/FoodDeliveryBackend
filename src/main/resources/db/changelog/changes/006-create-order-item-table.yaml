@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-create-order-item-table
+      author: shad
+      changes:
+        - createTable:
+            tableName: OrderItem
+            columns:
+              - column:
+                  name: id
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+
+              - column:
+                  name: orderId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: menuItemId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: nameSnapshot
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: unitPriceSnapshot
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: lineTotal
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: OrderItem
+            baseColumnNames: OrderId
+            referencedTableName: Orders
+            referencedColumnNames: id
+            constraintName: fk_order_item_order
+
+        - addForeignKeyConstraint:
+            baseTableName: OrderItem
+            baseColumnNames: menuItemId
+            referencedTableName: MenuItem
+            referencedColumnNames: id
+            constraintName: fk_order_item_menu_item
+
+        - createIndex:
+            tableName: OrderItem
+            indexName: idx_order_item_order
+            columns:
+              - column:
+                  name: orderId
+
+        - createIndex:
+            tableName: OrderItem
+            indexName: idx_order_item_menu_item
+            columns:
+              - column:
+                  name: menuItemId

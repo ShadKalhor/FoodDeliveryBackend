@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-user-table
+      author: shad
+      changes:
+        - createTable:
+            tableName: User
+            columns:
+              - column:
+                  name: id
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+
+              - column:
+                  name: role
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: phone
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: createdAt
+                  type: datetime2
+                  constraints:
+                    nullable: false

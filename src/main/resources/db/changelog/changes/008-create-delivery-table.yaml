@@ -1,0 +1,83 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-create-delivery-table
+      author: shad
+      changes:
+        - createTable:
+            tableName: Delivery
+            columns:
+              - column:
+                  name: id
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: orderId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: driverId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: pickupLat
+                  type: decimal(9,6)
+
+              - column:
+                  name: pickupLng
+                  type: decimal(9,6)
+
+              - column:
+                  name: dropoffLat
+                  type: decimal(9,6)
+
+              - column:
+                  name: dropoffLng
+                  type: decimal(9,6)
+
+              - column:
+                  name: assignedAt
+                  type: datetime2
+
+              - column:
+                  name: acceptedAt
+                  type: datetime2
+
+              - column:
+                  name: pickedUpAt
+                  type: datetime2
+
+              - column:
+                  name: deliveredAt
+                  type: datetime2
+        - addForeignKeyConstraint:
+            baseTableName: Delivery
+            baseColumnNames: orderId
+            referencedTableName: Orders
+            referencedColumnNames: id
+            constraintName: fk_delivery_order
+
+        - addForeignKeyConstraint:
+            baseTableName: Delivery
+            baseColumnNames: driverId
+            referencedTableName: Driver
+            referencedColumnNames: id
+            constraintName: fk_delivery_driver
+
+        - createIndex:
+            tableName: Delivery
+            indexName: idx_delivery_driver
+            columns:
+              - column:
+                  name: driverId

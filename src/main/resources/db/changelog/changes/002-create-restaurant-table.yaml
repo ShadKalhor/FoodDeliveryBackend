@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-restaurant-table.yaml
+      author: shad
+      changes:
+        - createTable:
+            tableName: Restaurant
+            columns:
+              - column:
+                  name: id
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(500)
+              - column:
+                  name: ownerUserId
+                  type: uniqueIdentifier
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(500)
+              - column:
+                  name: lat
+                  type: decimal(9,6)
+              - column:
+                  name: lng
+                  type: decimal(9,6)
+              - column:
+                  name: openTime
+                  type: time
+              - column:
+                  name: closeTime
+                  type: time
+              - column:
+                  name: isOpen
+                  type: bit
+              - column:
+                  name: minOrderAmount
+                  type: decimal(10,2)
+              - column:
+                  name: avgPrepTimeInMins
+                  type: int
+              - column:
+                  name: createdAt
+                  type: datetime2
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: restaurant
+            baseColumnNames: ownerUserId
+            referencedTableName: User
+            referencedColumnNames: id
+            constraintName: fk_restaurant_owner_user
