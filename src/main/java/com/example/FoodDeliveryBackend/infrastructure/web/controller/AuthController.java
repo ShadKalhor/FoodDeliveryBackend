@@ -1,22 +1,27 @@
 package com.example.FoodDeliveryBackend.infrastructure.web.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.AuthResponse;
+import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.LoginRequest;
+import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.MeResponse;
+import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.RegisterRequest;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
     @PostMapping("/register")
-    public Void Register(){return null;}
+    @ResponseStatus(HttpStatus.OK)
+    public AuthResponse Register(@Valid @RequestBody RegisterRequest request){return null;}
 
     @PostMapping("/login")
-    public Void Login(){return null;}
+    @ResponseStatus(HttpStatus.OK)
+    public AuthResponse Login(@Valid @RequestBody LoginRequest request){return null;}
 
     @GetMapping("/me")
-    public Void GetMe(){return null;}
+    @ResponseStatus(HttpStatus.OK)
+    public MeResponse GetMe(){return null;}
 
 }
