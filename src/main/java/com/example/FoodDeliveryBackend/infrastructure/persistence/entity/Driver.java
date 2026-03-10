@@ -7,13 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Driver")
+@Table(name = "driver")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -21,9 +24,9 @@ import java.util.UUID;
 public class Driver {
 
     @Id
-    @GeneratedValue
     private UUID id;
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
     @Enumerated(EnumType.STRING)
     private VehicleType vehicleType;
@@ -34,4 +37,9 @@ public class Driver {
     private BigDecimal avgRating;
 
 
+
+    @PrePersist
+    public void prePersist() {
+        if (id == null) id = UUID.randomUUID();
+    }
 }

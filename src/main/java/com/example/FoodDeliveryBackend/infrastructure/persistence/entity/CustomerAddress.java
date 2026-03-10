@@ -6,11 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
 @Entity
-@Table(name="CustomerAddress")
+@Table(name="customer_address")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -18,15 +21,20 @@ import java.util.UUID;
 public class CustomerAddress {
 
     @Id
-    @GeneratedValue
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     private String label;
     private String address;
     @Embedded
     private GeoPoint location;
 
+
+    @PrePersist
+    public void prePersist() {
+        if (id == null) id = UUID.randomUUID();
+    }
 }
 

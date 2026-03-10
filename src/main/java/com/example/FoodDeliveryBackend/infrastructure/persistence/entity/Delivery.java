@@ -7,12 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Delivery")
+@Table(name = "delivery")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -20,11 +23,12 @@ import java.util.UUID;
 public class Delivery {
 
     @Id
-    @GeneratedValue
     private UUID id;
     @OneToOne
+    @JoinColumn(name = "order_id")
     private Order order;
     @ManyToOne
+    @JoinColumn(name = "driver_id")
     private Driver driver;
 
     @Enumerated(EnumType.STRING)
@@ -48,5 +52,9 @@ public class Delivery {
     private Instant deliveredAt;
 
 
+    @PrePersist
+    public void prePersist() {
+        if (id == null) id = UUID.randomUUID();
+    }
 
 }

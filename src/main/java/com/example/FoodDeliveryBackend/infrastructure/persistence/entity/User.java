@@ -7,12 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -20,7 +23,6 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue
     private UUID id;
 
     @Enumerated(EnumType.STRING)
@@ -34,5 +36,9 @@ public class User {
     private UserStatus status;
     private Instant createdAt;
 
+    @PrePersist
+    public void prePersist() {
+        if (id == null) id = UUID.randomUUID();
+    }
 
 }
