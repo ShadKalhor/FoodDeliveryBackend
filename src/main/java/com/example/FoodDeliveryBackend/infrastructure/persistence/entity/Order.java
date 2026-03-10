@@ -6,11 +6,19 @@ import com.example.FoodDeliveryBackend.domain.model.Pricing;
 
 import com.example.FoodDeliveryBackend.domain.model.Timestamps;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "Orders")
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
 
     @Id

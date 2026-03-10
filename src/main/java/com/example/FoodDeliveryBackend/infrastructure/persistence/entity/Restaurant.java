@@ -2,6 +2,10 @@ package com.example.FoodDeliveryBackend.infrastructure.persistence.entity;
 
 import com.example.FoodDeliveryBackend.domain.model.GeoPoint;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -10,6 +14,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "Restaurant")
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Restaurant {
 
     @Id
