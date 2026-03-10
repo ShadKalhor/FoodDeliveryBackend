@@ -4,17 +4,17 @@ databaseChangeLog:
       author: shad
       changes:
         - createTable:
-            tableName: CustomerAddress
+            tableName: customer_address
             columns:
               - column:
                   name: id
-                  type: uniqueIdentifier
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
                     primaryKey: true
               - column:
-                  name: userId
-                  type: uniqueIdentifier
+                  name: user_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
               - column:
@@ -34,8 +34,8 @@ databaseChangeLog:
                   type: decimal(9,6)
 
         - addForeignKeyConstraint:
-            baseTableName: CustomerAddress
-            baseColumnNames: userId
-            referencedTableName: User
+            baseTableName: customer_address
+            baseColumnNames: user_id
+            referencedTableName: users
             referencedColumnNames: id
             constraintName: fk_customer_address_user

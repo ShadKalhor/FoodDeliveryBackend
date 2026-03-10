@@ -4,23 +4,23 @@ databaseChangeLog:
       author: shad
       changes:
         - createTable:
-            tableName: Delivery
+            tableName: delivery
             columns:
               - column:
                   name: id
-                  type: uniqueIdentifier
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
                     primaryKey: true
               - column:
-                  name: orderId
-                  type: uniqueIdentifier
+                  name: order_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
 
               - column:
-                  name: driverId
-                  type: uniqueIdentifier
+                  name: driver_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
 
@@ -31,53 +31,53 @@ databaseChangeLog:
                     nullable: false
 
               - column:
-                  name: pickupLat
+                  name: pickup_lat
                   type: decimal(9,6)
 
               - column:
-                  name: pickupLng
+                  name: pickup_lng
                   type: decimal(9,6)
 
               - column:
-                  name: dropoffLat
+                  name: dropoff_lat
                   type: decimal(9,6)
 
               - column:
-                  name: dropoffLng
+                  name: dropoff_lng
                   type: decimal(9,6)
 
               - column:
-                  name: assignedAt
+                  name: assigned_at
                   type: datetime2
 
               - column:
-                  name: acceptedAt
+                  name: accepted_at
                   type: datetime2
 
               - column:
-                  name: pickedUpAt
+                  name: picked_up_at
                   type: datetime2
 
               - column:
-                  name: deliveredAt
+                  name: delivered_at
                   type: datetime2
         - addForeignKeyConstraint:
-            baseTableName: Delivery
-            baseColumnNames: orderId
-            referencedTableName: Orders
+            baseTableName: delivery
+            baseColumnNames: order_id
+            referencedTableName: orders
             referencedColumnNames: id
             constraintName: fk_delivery_order
 
         - addForeignKeyConstraint:
-            baseTableName: Delivery
-            baseColumnNames: driverId
-            referencedTableName: Driver
+            baseTableName: delivery
+            baseColumnNames: driver_id
+            referencedTableName: driver
             referencedColumnNames: id
             constraintName: fk_delivery_driver
 
         - createIndex:
-            tableName: Delivery
+            tableName: delivery
             indexName: idx_delivery_driver
             columns:
               - column:
-                  name: driverId
+                  name: driver_id

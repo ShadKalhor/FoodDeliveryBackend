@@ -4,11 +4,11 @@ databaseChangeLog:
       author: shad
       changes:
         - createTable:
-            tableName: User
+            tableName: users
             columns:
               - column:
                   name: id
-                  type: uniqueIdentifier
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
                     primaryKey: true
@@ -51,7 +51,7 @@ databaseChangeLog:
                     nullable: false
 
               - column:
-                  name: createdAt
+                  name: created_at
                   type: datetime2
                   constraints:
                     nullable: false

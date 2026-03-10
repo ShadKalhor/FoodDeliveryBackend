@@ -4,30 +4,30 @@ databaseChangeLog:
       author: shad
       changes:
         - createTable:
-            tableName: Orders
+            tableName: orders
             columns:
               - column:
                   name: id
-                  type: uniqueIdentifier
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
                     primaryKey: true
 
               - column:
-                  name: customerId
-                  type: uniqueIdentifier
+                  name: customer_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
 
               - column:
-                  name: restaurantId
-                  type: uniqueIdentifier
+                  name: restaurant_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
 
               - column:
-                  name: deliveryAddressId
-                  type: uniqueIdentifier
+                  name: delivery_address_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
 
@@ -38,19 +38,19 @@ databaseChangeLog:
                     nullable: false
 
               - column:
-                  name: itemsSubtotal
+                  name: items_subtotal
                   type: decimal(10,2)
                   constraints:
                     nullable: false
 
               - column:
-                  name: deliveryFee
+                  name: delivery_fee
                   type: decimal(10,2)
                   constraints:
                     nullable: false
 
               - column:
-                  name: serviceFee
+                  name: service_fee
                   type: decimal(10,2)
                   constraints:
                     nullable: false
@@ -68,68 +68,68 @@ databaseChangeLog:
                     nullable: false
 
               - column:
-                  name: createdAt
+                  name: created_at
                   type: datetime2
                   constraints:
                     nullable: false
 
               - column:
-                  name: acceptedAt
+                  name: accepted_at
                   type: datetime2
 
               - column:
-                  name: readyAt
+                  name: ready_at
                   type: datetime2
 
               - column:
-                  name: pickedUpAt
+                  name: picked_up_at
                   type: datetime2
 
               - column:
-                  name: deliveredAt
+                  name: delivered_at
                   type: datetime2
 
               - column:
-                  name: cancelledAt
+                  name: cancelled_at
                   type: datetime2
 
               - column:
-                  name: paymentStatus
+                  name: payment_status
                   type: varchar(50)
                   constraints:
                     nullable: false
 
         - addForeignKeyConstraint:
             baseTableName: Orders
-            baseColumnNames: customerId
-            referencedTableName: User
+            baseColumnNames: customer_id
+            referencedTableName: Users
             referencedColumnNames: id
             constraintName: fk_Orders_customer
 
         - addForeignKeyConstraint:
-            baseTableName: Orders
-            baseColumnNames: restaurantId
-            referencedTableName: Restaurant
+            baseTableName: orders
+            baseColumnNames: restaurant_id
+            referencedTableName: restaurant
             referencedColumnNames: id
             constraintName: fk_Orders_restaurant
 
         - addForeignKeyConstraint:
-            baseTableName: Orders
-            baseColumnNames: deliveryAddressId
-            referencedTableName: CustomerAddress
+            baseTableName: orders
+            baseColumnNames: delivery_address_id
+            referencedTableName: customer_address
             referencedColumnNames: id
             constraintName: fk_Orders_delivery_address
 
         - createIndex:
-            tableName: Orders
+            tableName: orders
             indexName: idx_Orders_customer
             columns:
               - column:
-                  name: customerId
+                  name: customer_id
 
         - createIndex:
-            tableName: Orders
+            tableName: orders
             indexName: idx_Orders_restaurant
             columns:
                 - column:
-                    name: restaurantId
+                    name: restaurant_id

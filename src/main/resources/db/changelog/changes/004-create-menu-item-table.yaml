@@ -4,17 +4,17 @@ databaseChangeLog:
       author: shad
       changes:
         createTable:
-          tableName: MenuItem
+          tableName: menu_item
           columns:
             - column:
                 name: id
-                type: uniqueIdentifier
+                type: uniqueidentifier
                 constraints:
                   nullable: false
                   primaryKey: true
             - column:
-                name: restaurantId
-                type: uniqueIdentifier
+                name: restaurant_id
+                type: uniqueidentifier
                 constraints:
                   nullable: false
             - column:
@@ -31,7 +31,7 @@ databaseChangeLog:
                 constraints:
                   nullable: false
             - column:
-                name: isAvailable
+                name: is_available
                 type: bit
             - column:
                 name: category
@@ -39,18 +39,18 @@ databaseChangeLog:
                 constraints:
                   nullable: false
             - column:
-                name: imageUrl
+                name: image_url
                 type: varchar(255)
             - column:
-                name: createdAt
+                name: created_at
                 type: datetime2
                 constraints:
                   nullable: false
 
 
             - addForeignKeyConstraint:
-                baseTableName: MenuItem
-                baseColumnNames: restaurantId
-                referencedTableName: Restaurant
+                baseTableName: menu_item
+                baseColumnNames: restaurant_id
+                referencedTableName: restaurant
                 referencedColumnNames: id
                 constraintName: fk_menu_item_restaurant

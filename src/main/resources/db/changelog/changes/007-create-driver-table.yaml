@@ -4,29 +4,29 @@ databaseChangeLog:
       author: shad
       changes:
         - createTable:
-            tableName: Driver
+            tableName: driver
             columns:
               - column:
                   name: id
-                  type: uniqueIdentifier
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
                     primaryKey: true
 
               - column:
-                  name: userId
-                  type: uniqueIdentifier
+                  name: user_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
 
               - column:
-                  name: vehicleType
+                  name: vehicle_type
                   type: varchar(50)
                   constraints:
                     nullable: false
 
               - column:
-                  name: isOnline
+                  name: is_online
                   type: bit
                   constraints:
                     nullable: false
@@ -40,23 +40,23 @@ databaseChangeLog:
                   type: decimal(9,6)
 
               - column:
-                  name: lastLocationAt
+                  name: last_location_at
                   type: datetime2
 
               - column:
-                  name: avgRating
+                  name: avg_rating
                   type: decimal(10,2)
 
         - addForeignKeyConstraint:
-            baseTableName: Driver
-            baseColumnNames: userId
-            referencedTableName: User
+            baseTableName: driver
+            baseColumnNames: user_id
+            referencedTableName: users
             referencedColumnNames: id
             constraintName: fk_driver_user
         - createIndex:
-            tableName: Driver
+            tableName: driver
             indexName: idx_driver_user
             columns:
               - column:
-                  name: userId
+                  name: user_id
 

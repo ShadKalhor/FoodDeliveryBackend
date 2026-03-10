@@ -4,25 +4,25 @@ databaseChangeLog:
       author: shad
       changes:
         - createTable:
-            tableName: Restaurant
+            tableName: restaurant
             columns:
               - column:
                   name: id
-                  type: uniqueIdentifier
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
                     primaryKey: true
               - column:
                   name: name
-                  type: uniqueIdentifier
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
                   name: description
                   type: varchar(500)
               - column:
-                  name: ownerUserId
-                  type: uniqueIdentifier
+                  name: owner_user_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
               - column:
@@ -35,29 +35,29 @@ databaseChangeLog:
                   name: lng
                   type: decimal(9,6)
               - column:
-                  name: openTime
+                  name: open_time
                   type: time
               - column:
-                  name: closeTime
+                  name: close_time
                   type: time
               - column:
-                  name: isOpen
+                  name: is_open
                   type: bit
               - column:
-                  name: minOrderAmount
+                  name: min_order_amount
                   type: decimal(10,2)
               - column:
-                  name: avgPrepTimeInMins
+                  name: avg_prep_time_in_mins
                   type: int
               - column:
-                  name: createdAt
+                  name: created_at
                   type: datetime2
                   constraints:
                     nullable: false
 
         - addForeignKeyConstraint:
             baseTableName: restaurant
-            baseColumnNames: ownerUserId
-            referencedTableName: User
+            baseColumnNames: owner_user_id
+            referencedTableName: users
             referencedColumnNames: id
             constraintName: fk_restaurant_owner_user

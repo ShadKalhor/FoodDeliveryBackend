@@ -4,35 +4,35 @@ databaseChangeLog:
       author: shad
       changes:
         - createTable:
-            tableName: OrderItem
+            tableName: order_item
             columns:
               - column:
                   name: id
-                  type: uniqueIdentifier
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
                     primaryKey: true
 
               - column:
-                  name: orderId
-                  type: uniqueIdentifier
+                  name: order_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
 
               - column:
-                  name: menuItemId
-                  type: uniqueIdentifier
+                  name: menu_item_id
+                  type: uniqueidentifier
                   constraints:
                     nullable: false
 
               - column:
-                  name: nameSnapshot
+                  name: name_snapshot
                   type: varchar(255)
                   constraints:
                     nullable: false
 
               - column:
-                  name: unitPriceSnapshot
+                  name: unit_price_snapshot
                   type: decimal(10,2)
                   constraints:
                     nullable: false
@@ -44,35 +44,35 @@ databaseChangeLog:
                     nullable: false
 
               - column:
-                  name: lineTotal
+                  name: line_total
                   type: decimal(10,2)
                   constraints:
                     nullable: false
 
         - addForeignKeyConstraint:
-            baseTableName: OrderItem
-            baseColumnNames: OrderId
-            referencedTableName: Orders
+            baseTableName: order_item
+            baseColumnNames: order_id
+            referencedTableName: orders
             referencedColumnNames: id
             constraintName: fk_order_item_order
 
         - addForeignKeyConstraint:
-            baseTableName: OrderItem
-            baseColumnNames: menuItemId
-            referencedTableName: MenuItem
+            baseTableName: order_item
+            baseColumnNames: menu_item_id
+            referencedTableName: menu_item
             referencedColumnNames: id
             constraintName: fk_order_item_menu_item
 
         - createIndex:
-            tableName: OrderItem
+            tableName: order_item
             indexName: idx_order_item_order
             columns:
               - column:
-                  name: orderId
+                  name: order_id
 
         - createIndex:
-            tableName: OrderItem
+            tableName: order_item
             indexName: idx_order_item_menu_item
             columns:
               - column:
-                  name: menuItemId
+                  name: menu_item_id
