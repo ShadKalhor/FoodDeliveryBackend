@@ -34,6 +34,9 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	implementation 'io.vavr:vavr:0.10.4'
+
+
 
 
 	compileOnly 'org.projectlombok:lombok:1.18.34'
