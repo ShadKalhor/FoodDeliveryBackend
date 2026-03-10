@@ -3,8 +3,8 @@ package com.example.FoodDeliveryBackend.infrastructure.web.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/restaurant-admin")
+@RestController
+@RequestMapping("/api/v1/restaurant-admin")
 public class RestaurantAdminController {
 
     @PostMapping("/restaurant")
