@@ -9,9 +9,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+
+    private static final Set<String> APP_ROLES = Set.of("ADMIN", "CUSTOMER", "DRIVER");
 
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
@@ -29,6 +32,7 @@ public class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedA
         return roles.stream()
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
+                .filter(APP_ROLES::contains)
                 .map(role -> "ROLE_" + role)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
