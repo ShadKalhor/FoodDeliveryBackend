@@ -1,15 +1,16 @@
 package com.example.FoodDeliveryBackend.infrastructure.web.advice;
 
+import com.example.FoodDeliveryBackend.domain.exception.StructuredError;
 import lombok.Getter;
-import ordermanager.domain.exception.StructuredError;
 
-import static ordermanager.infrastructure.web.exception.ErrorTypeToHttpStatusMapper.httpStatus;
+import static com.example.FoodDeliveryBackend.infrastructure.web.advice.ErrorTypeToHttpStatusMapper.httpStatus;
 
+@Getter
 public class ErrorStructureException extends RuntimeException {
 
-    @Getter
+
     private final int httpStatus;
-    @Getter
+
     private final String message;
 
     public ErrorStructureException(StructuredError structuredError) {

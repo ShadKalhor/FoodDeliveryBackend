@@ -1,15 +1,15 @@
 package com.example.FoodDeliveryBackend.infrastructure.web.advice;
 
+import com.example.FoodDeliveryBackend.infrastructure.exception.EntityNotFoundException;
+import com.example.FoodDeliveryBackend.infrastructure.exception.InsufficientInventoryException;
+import com.example.FoodDeliveryBackend.infrastructure.exception.ValidationException;
 import io.vavr.control.Option;
-import ordermanager.infrastructure.exception.EntityNotFoundException;
-import ordermanager.infrastructure.exception.InsufficientInventoryException;
-import ordermanager.infrastructure.exception.ValidationException;
 import org.hibernate.HibernateException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,9 +57,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         final var errorResponse = new ErrorResponse("INVALID_REQUEST");
         return ResponseEntity.badRequest().body(errorResponse);
     }
+    @Override
+    protected ResponseEntity<Object> handleMaxUploadSizeExceededException(
+            MaxUploadSizeExceededException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
 
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    ResponseEntity<ErrorResponse> handleFileTooBigException(MaxUploadSizeExceededException ex) {
         logger.error("Handling MaxUploadSizeExceededException", ex);
         final var errorResponse = new ErrorResponse("INVALID_REQUEST");
         return ResponseEntity.badRequest().body(errorResponse);
@@ -73,19 +77,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, httpStatus);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex,
-                                                         HttpHeaders headers,
-                                                         HttpStatus status,
-                                                         WebRequest request) {
-        logger.error("Handle BindException", ex);
-        return handleBindingResultErrors(ex.getBindingResult());
-    }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers,
-                                                                  HttpStatus status,
+                                                                  HttpStatusCode status,
                                                                   WebRequest request) {
         logger.error("Handle HttpMessageNotReadableException", ex);
         final var errorResponse = new ErrorResponse("INVALID_REQUEST");
@@ -95,7 +91,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
-                                                                  HttpStatus status,
+                                                                  HttpStatusCode status,
                                                                   WebRequest request) {
         logger.error("Handle MethodArgumentNotValidException", ex);
         final var errorResponse = new ErrorResponse("INVALID_REQUEST");
@@ -114,41 +110,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 )
         );
     }
-
-    /*
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiError> handleEntityNotFoundException(EntityNotFoundException ex, HttpServletRequest req) {
-        var error = new ApiError(HttpStatus.NOT_FOUND.value(), "NotFound",
-                ex.getMessage(), req.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(InsufficientInventoryException.class)
-    public ResponseEntity<ApiError> handleInsufficientInventoryException(InsufficientInventoryException ex, HttpServletRequest req) {
-        var error = new ApiError(HttpStatus.CONFLICT.value(), "Conflict",
-                ex.getMessage(), req.getRequestURI());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
-    }
-
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ApiError> handleValidationException(ValidationException ex, HttpServletRequest req) {
-
-        var error = new ApiError(HttpStatus.BAD_REQUEST.value(),"BadRequest",
-                ex.getMessage(),req.getRequestURI());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleAny(Exception ex, HttpServletRequest req) {
-        var error = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "InternalServerError",
-                "Unexpected error", req.getRequestURI());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
-*/
-
-
-
-
 }
-

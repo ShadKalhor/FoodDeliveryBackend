@@ -1,6 +1,7 @@
 package com.example.FoodDeliveryBackend.infrastructure.web.advice;
 
-import ordermanager.domain.exception.ErrorType;
+
+import com.example.FoodDeliveryBackend.domain.exception.ErrorType;
 import org.springframework.http.HttpStatus;
 
 public final class ErrorTypeToHttpStatusMapper {
