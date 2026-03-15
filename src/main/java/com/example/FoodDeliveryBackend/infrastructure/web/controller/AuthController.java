@@ -1,10 +1,8 @@
 package com.example.FoodDeliveryBackend.infrastructure.web.controller;
 
-import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.AuthResponse;
-import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.LoginRequest;
+import com.example.FoodDeliveryBackend.domain.enums.Roles;
+import com.example.FoodDeliveryBackend.infrastructure.security.CurrentUserProvider;
 import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.MeResponse;
-import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.RegisterRequest;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,16 +10,37 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.OK)
-    public AuthResponse Register(@Valid @RequestBody RegisterRequest request){return null;}
+    private final CurrentUserProvider currentUserProvider;
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public AuthResponse Login(@Valid @RequestBody LoginRequest request){return null;}
+    public AuthController(CurrentUserProvider currentUserProvider){
+        this.currentUserProvider = currentUserProvider;
+    }
 
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public MeResponse GetMe(){return null;}
+    public MeResponse GetMe(){
+
+        return new MeResponse(
+                currentUserProvider.getSubject(),
+                currentUserProvider.getUsername(),
+                null,
+                currentUserProvider.getEmail(),
+                mapRole()
+        );
+
+    }
+
+    private Roles mapRole(){
+
+        return switch (currentUserProvider.getAuthorities().toString().toLowerCase()) {
+            case "customer" -> Roles.CUSTOMER;
+            case "restaurant_admin" -> Roles.RESTAURANT_ADMIN;
+            case "admin" -> Roles.ADMIN;
+            case "driver" -> Roles.DRIVER;
+            default -> null;
+
+        };
+
+    }
 
 }
