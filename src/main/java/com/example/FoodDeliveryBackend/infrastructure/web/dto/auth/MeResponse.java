@@ -5,7 +5,7 @@ import com.example.FoodDeliveryBackend.domain.enums.Roles;
 import java.util.UUID;
 
 public record MeResponse(
-        UUID userId,
+        String userId,
         String name,
         String phone,
         String email,
