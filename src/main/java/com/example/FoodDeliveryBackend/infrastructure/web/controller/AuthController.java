@@ -20,23 +20,26 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public MeResponse GetMe(){
 
+        Roles role = mapRole(currentUserProvider.getAuthorities().toString());
+
+
         return new MeResponse(
                 currentUserProvider.getSubject(),
                 currentUserProvider.getUsername(),
-                null,
+                currentUserProvider.getAuthorities().toString(),
                 currentUserProvider.getEmail(),
-                mapRole()
+                role
         );
 
     }
 
-    private Roles mapRole(){
+    private Roles mapRole(String authorities){
 
-        return switch (currentUserProvider.getAuthorities().toString().toLowerCase()) {
-            case "customer" -> Roles.CUSTOMER;
-            case "restaurant_admin" -> Roles.RESTAURANT_ADMIN;
-            case "admin" -> Roles.ADMIN;
-            case "driver" -> Roles.DRIVER;
+        return switch (authorities) {
+            case "[ROLE_CUSTOMER]" -> Roles.CUSTOMER;
+            case "[ROLE_RESTAURANT_ADMIN]" -> Roles.RESTAURANT_ADMIN;
+            case "[ROLE_ADMIN]" -> Roles.ADMIN;
+            case "[ROLE_DRIVER]" -> Roles.DRIVER;
             default -> null;
 
         };
