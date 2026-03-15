@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
-    private static final Set<String> APP_ROLES = Set.of("ADMIN", "CUSTOMER", "DRIVER");
+    private static final Set<String> APP_ROLES = Set.of("RESTAURANT_ADMIN", "ADMIN", "CUSTOMER", "DRIVER");
 
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
