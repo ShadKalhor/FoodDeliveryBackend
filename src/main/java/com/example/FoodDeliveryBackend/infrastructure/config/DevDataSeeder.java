@@ -26,7 +26,7 @@ public class DevDataSeeder {
 
     @Bean
     CommandLineRunner seedData(
-            UserRepositoryJPA userRepository,
+            AccountRepositoryJPA AccountRepository,
             RestaurantRepositoryJPA restaurantRepository,
             CustomerAddressRepositoryJPA customerAddressRepository,
             MenuItemRepositoryJPA menuItemRepository,
@@ -36,59 +36,59 @@ public class DevDataSeeder {
             DeliveryRepositoryJPA deliveryRepository
     ) {
         return args -> {
-            if (userRepository.count() > 0) {
+            if (AccountRepository.count() > 0) {
                 return;
             }
 
             Faker faker = new Faker();
             Random random = new Random();
 
-            List<User> customers = new ArrayList<>();
-            List<User> owners = new ArrayList<>();
-            List<User> driverUsers = new ArrayList<>();
+            List<Account> customers = new ArrayList<>();
+            List<Account> owners = new ArrayList<>();
+            List<Account> driverAccounts = new ArrayList<>();
 
             for (int i = 0; i < 20; i++) {
-                User user = new User();
-                user.setRole(Roles.CUSTOMER);
-                user.setName(faker.name().fullName());
-                user.setPhone("07" + (100000000 + random.nextInt(899999999)));
-                user.setEmail("customer" + i + "@test.com");
-                user.setPassword("$2a$10$examplehashedpassword");
-                user.setStatus(UserStatus.ONLINE);
-                user.setCreatedAt(Instant.now());
-                customers.add(user);
+                Account Account = new Account();
+                Account.setRole(Roles.CUSTOMER);
+                Account.setName(faker.name().fullName());
+                Account.setPhone("07" + (100000000 + random.nextInt(899999999)));
+                Account.setEmail("customer" + i + "@test.com");
+                Account.setPassword("$2a$10$examplehashedpassword");
+                Account.setStatus(UserStatus.ONLINE);
+                Account.setCreatedAt(Instant.now());
+                customers.add(Account);
             }
 
             for (int i = 0; i < 5; i++) {
-                User user = new User();
-                user.setRole(Roles.RESTAURANT_ADMIN);
-                user.setName(faker.name().fullName());
-                user.setPhone("07" + (100000000 + random.nextInt(899999999)));
-                user.setEmail("owner" + i + "@test.com");
-                user.setPassword("$2a$10$examplehashedpassword");
-                user.setStatus(UserStatus.ONLINE);
-                user.setCreatedAt(Instant.now());
-                owners.add(user);
+                Account Account = new Account();
+                Account.setRole(Roles.RESTAURANT_ADMIN);
+                Account.setName(faker.name().fullName());
+                Account.setPhone("07" + (100000000 + random.nextInt(899999999)));
+                Account.setEmail("owner" + i + "@test.com");
+                Account.setPassword("$2a$10$examplehashedpassword");
+                Account.setStatus(UserStatus.ONLINE);
+                Account.setCreatedAt(Instant.now());
+                owners.add(Account);
             }
 
             for (int i = 0; i < 5; i++) {
-                User user = new User();
-                user.setRole(Roles.DRIVER);
-                user.setName(faker.name().fullName());
-                user.setPhone("07" + (100000000 + random.nextInt(899999999)));
-                user.setEmail("driver" + i + "@test.com");
-                user.setPassword("$2a$10$examplehashedpassword");
-                user.setStatus(UserStatus.ONLINE);
-                user.setCreatedAt(Instant.now());
-                driverUsers.add(user);
+                Account Account = new Account();
+                Account.setRole(Roles.DRIVER);
+                Account.setName(faker.name().fullName());
+                Account.setPhone("07" + (100000000 + random.nextInt(899999999)));
+                Account.setEmail("driver" + i + "@test.com");
+                Account.setPassword("$2a$10$examplehashedpassword");
+                Account.setStatus(UserStatus.ONLINE);
+                Account.setCreatedAt(Instant.now());
+                driverAccounts.add(Account);
             }
 
-            customers = userRepository.saveAll(customers);
-            owners = userRepository.saveAll(owners);
-            driverUsers = userRepository.saveAll(driverUsers);
+            customers = AccountRepository.saveAll(customers);
+            owners = AccountRepository.saveAll(owners);
+            driverAccounts = AccountRepository.saveAll(driverAccounts);
 
             List<CustomerAddress> addresses = new ArrayList<>();
-            for (User customer : customers) {
+            for (Account customer : customers) {
                 int count = 1 + random.nextInt(2);
                 for (int i = 0; i < count; i++) {
                     CustomerAddress address = new CustomerAddress();
@@ -151,9 +151,9 @@ public class DevDataSeeder {
             List<Driver> drivers = new ArrayList<>();
             VehicleType[] vehicleTypes = VehicleType.values();
 
-            for (User driverUser : driverUsers) {
+            for (Account driverAccount : driverAccounts) {
                 Driver driver = new Driver();
-                driver.setUser(driverUser);
+                driver.setUser(driverAccount);
                 driver.setVehicleType(vehicleTypes[random.nextInt(vehicleTypes.length)]);
                 driver.setOnline(random.nextBoolean());
 
@@ -169,7 +169,7 @@ public class DevDataSeeder {
 
             List<Order> orders = new ArrayList<>();
             for (int i = 0; i < 15; i++) {
-                User customer = customers.get(random.nextInt(customers.size()));
+                Account customer = customers.get(random.nextInt(customers.size()));
                 Restaurant restaurant = restaurants.get(random.nextInt(restaurants.size()));
 
                 List<CustomerAddress> customerAddresses = addresses.stream()

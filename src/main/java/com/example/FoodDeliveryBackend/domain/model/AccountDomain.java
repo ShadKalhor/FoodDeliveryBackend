@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class UserDomain {
+public class AccountDomain {
 
     private UUID id;
     private Roles role;

@@ -27,7 +27,7 @@ public class Driver {
     private UUID id;
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Account user;
     @Enumerated(EnumType.STRING)
     private VehicleType vehicleType;
     private boolean isOnline;

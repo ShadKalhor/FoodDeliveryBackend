@@ -25,7 +25,7 @@ public class CustomerAddress {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Account user;
     private String label;
     private String address;
     @Embedded

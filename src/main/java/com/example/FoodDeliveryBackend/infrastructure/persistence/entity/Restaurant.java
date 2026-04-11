@@ -30,7 +30,7 @@ public class Restaurant {
     private String address;
     @ManyToOne
     @JoinColumn(name = "owner_user_id")
-    private User ownerUser;
+    private Account ownerUser;
     @Embedded
     private GeoPoint location;
     private LocalTime openTime;
