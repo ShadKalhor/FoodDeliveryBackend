@@ -8,7 +8,6 @@ import com.example.FoodDeliveryBackend.infrastructure.persistence.entity.Account
 import com.example.FoodDeliveryBackend.infrastructure.persistence.mapper.AccountMapper;
 import com.example.FoodDeliveryBackend.infrastructure.persistence.repository.AccountRepositoryJPA;
 import io.vavr.control.Either;
-import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 

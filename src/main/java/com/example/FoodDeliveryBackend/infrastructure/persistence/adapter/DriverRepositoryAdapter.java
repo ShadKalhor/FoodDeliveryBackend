@@ -8,7 +8,6 @@ import com.example.FoodDeliveryBackend.infrastructure.persistence.entity.Driver;
 import com.example.FoodDeliveryBackend.infrastructure.persistence.mapper.DriverMapper;
 import com.example.FoodDeliveryBackend.infrastructure.persistence.repository.DriverRepositoryJPA;
 import io.vavr.control.Either;
-import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 
