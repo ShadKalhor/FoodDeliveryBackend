@@ -12,7 +12,7 @@ public interface DriverRepositoryPort {
 
     Either<StructuredError, DriverDomain> save(DriverDomain driverDomain);
 
-    Option<DriverDomain> findById(UUID driverId);
+    Either<StructuredError, DriverDomain> findById(UUID driverId);
 
     List<DriverDomain> findAll();
 
