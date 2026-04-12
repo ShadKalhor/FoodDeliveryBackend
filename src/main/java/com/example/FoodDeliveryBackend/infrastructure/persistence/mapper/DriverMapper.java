@@ -10,13 +10,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.UUID;
 
-@Mapper(
-        componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-)
 public interface DriverMapper {
 
-    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "userId", source = "user")
     DriverDomain toDomain(Driver entity);
 
     @Mapping(target = "user", source = "userId")
@@ -30,5 +26,8 @@ public interface DriverMapper {
         Account account = new Account();
         account.setId(userId);
         return account;
+    }
+    default UUID map(Account account) {
+        return account != null ? account.getId() : null;
     }
 }
