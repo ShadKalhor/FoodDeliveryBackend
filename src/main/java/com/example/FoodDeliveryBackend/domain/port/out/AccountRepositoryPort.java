@@ -14,8 +14,6 @@ public interface AccountRepositoryPort {
 
     Option<AccountDomain> findById(UUID accountId);
 
-    Option<AccountDomain> findByName(String name);
-
     List<AccountDomain> findAll();
 
     Option<AccountDomain> findByPhone(String phoneNumber);
