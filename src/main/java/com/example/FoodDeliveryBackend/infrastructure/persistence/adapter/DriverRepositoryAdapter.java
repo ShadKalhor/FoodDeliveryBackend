@@ -33,6 +33,7 @@ public class DriverRepositoryAdapter  implements DriverRepositoryPort {
     }
 
     @Override
+    @Transactional
     public Either<StructuredError, DriverDomain> update(DriverDomain domain) {
 
         DriverDomain dbSearchResult = findById(domain.getId()).getOrElse((DriverDomain) null);
