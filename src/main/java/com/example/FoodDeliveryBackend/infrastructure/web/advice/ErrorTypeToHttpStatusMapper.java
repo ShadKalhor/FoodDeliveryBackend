@@ -21,6 +21,8 @@ public final class ErrorTypeToHttpStatusMapper {
             return HttpStatus.INTERNAL_SERVER_ERROR.value();
         } else if (errorType == ErrorType.CONFLICT) {
             return HttpStatus.CONFLICT.value();
+        } else if (errorType == ErrorType.DATABASE_ERROR){
+            return HttpStatus.BAD_REQUEST.value(); //temp until you find a better status.
         }
         return HttpStatus.BAD_REQUEST.value();
     }
