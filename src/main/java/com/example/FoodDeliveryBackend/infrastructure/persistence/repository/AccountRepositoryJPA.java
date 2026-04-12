@@ -11,5 +11,8 @@ public interface AccountRepositoryJPA extends JpaRepository<Account, UUID> {
 
     Option<Account> findByEmail(String email);
 
+    Option<Account> findOptionById(UUID id);
+
+    Option<Account> findOptionByPhone(String phone);
     boolean existsByEmail(String email);
 }
