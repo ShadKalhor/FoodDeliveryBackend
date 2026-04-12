@@ -31,8 +31,17 @@ public class AccountRepositoryAdapter implements AccountRepositoryPort {
     }
 
     @Override
-    public Option<AccountDomain> findById(UUID accountId) {
-        return accountRepositoryJPA.findOptionById(accountId).map(accountMapper::toDomain);
+    public Either<StructuredError, AccountDomain> findById(UUID accountId) {
+
+
+        return Try.of(() -> accountRepositoryJPA.findOptionById(accountId))
+                .toEither(() -> new StructuredError("Error While Getting Account", ErrorType.DATABASE_ERROR))
+                .flatMap(option -> option
+                        .map(accountMapper::toDomain)
+                        .toEither(() -> new StructuredError("Error While Mapping The Returned Value of FindAccountById",
+                                ErrorType.SERVER_ERROR))
+                );
+
     }
 
     @Override
@@ -41,9 +50,15 @@ public class AccountRepositoryAdapter implements AccountRepositoryPort {
     }
 
     @Override
-    public Option<AccountDomain> findByPhone(String phoneNumber) {
-        return accountRepositoryJPA.findOptionByPhone(phoneNumber).map(accountMapper::toDomain);
-    }
+    public Either<StructuredError, AccountDomain> findByPhone(String phoneNumber) {
+
+        return Try.of(() -> accountRepositoryJPA.findOptionByPhone(phoneNumber))
+                .toEither(() -> new StructuredError("Error While Getting Account", ErrorType.DATABASE_ERROR))
+                .flatMap(option -> option
+                        .map(accountMapper::toDomain)
+                        .toEither(() -> new StructuredError("Error While Mapping The Returned Value of FindAccountByPhone",
+                                ErrorType.SERVER_ERROR))
+                );    }
 
     @Override
     public Either<StructuredError, Void> deleteById(UUID accountId) {

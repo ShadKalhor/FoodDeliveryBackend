@@ -12,11 +12,11 @@ public interface AccountRepositoryPort {
 
     Either<StructuredError, AccountDomain> save(AccountDomain domain);
 
-    Option<AccountDomain> findById(UUID accountId);
+    Either<StructuredError, AccountDomain> findById(UUID accountId);
 
     List<AccountDomain> findAll();
 
-    Option<AccountDomain> findByPhone(String phoneNumber);
+    Either<StructuredError, AccountDomain> findByPhone(String phoneNumber);
 
     Either<StructuredError, Void> deleteById(UUID userId);
 
