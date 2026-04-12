@@ -10,6 +10,7 @@ import com.example.FoodDeliveryBackend.infrastructure.persistence.repository.Acc
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +22,27 @@ public class AccountRepositoryAdapter implements AccountRepositoryPort {
     private final AccountMapper accountMapper;
 
     @Override
+    @Transactional
     public Either<StructuredError, AccountDomain> save(AccountDomain domain) {
 
         Account entity = accountMapper.toEntity(domain);
 
         return Try.of(() -> accountRepositoryJPA.save(entity)).map(accountMapper::toDomain).toEither(new StructuredError("Error While Saving Account", ErrorType.DATABASE_ERROR));
+
+    }
+
+    @Override
+    @Transactional
+    public Either<StructuredError, AccountDomain> update(AccountDomain domain) {
+
+        AccountDomain dbSearchDomain = findById(domain.getId()).getOrElse((AccountDomain) null);
+        if (dbSearchDomain == null)
+                return Either.left(new StructuredError("Could Not Find Account With Specified Id",ErrorType.NOT_FOUND_ERROR));
+
+        return Try.of(() -> accountRepositoryJPA.save(accountMapper.toEntity(domain)))
+                .map(accountMapper::toDomain)
+                .toEither(new StructuredError("Error While Updating Account",
+                        ErrorType.DATABASE_ERROR));
 
     }
 
@@ -60,6 +77,7 @@ public class AccountRepositoryAdapter implements AccountRepositoryPort {
                 );    }
 
     @Override
+    @Transactional
     public Either<StructuredError, Void> deleteById(UUID accountId) {
         return Try.run(() -> accountRepositoryJPA.deleteById(accountId))
                 .toEither(new StructuredError("Error While Deleting Account",

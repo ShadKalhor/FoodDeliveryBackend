@@ -10,6 +10,7 @@ import com.example.FoodDeliveryBackend.infrastructure.persistence.repository.Dri
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,12 +22,27 @@ public class DriverRepositoryAdapter  implements DriverRepositoryPort {
     private final DriverMapper driverMapper;
 
     @Override
+    @Transactional
     public Either<StructuredError, DriverDomain> save(DriverDomain domain) {
 
         Driver entity = driverMapper.toEntity(domain);
 
         return Try.of(() ->driverRepositoryJPA.save(entity)).map(driverMapper::toDomain)
                 .toEither(new StructuredError("Error While Saving Driver",
+                        ErrorType.DATABASE_ERROR));
+    }
+
+    @Override
+    public Either<StructuredError, DriverDomain> update(DriverDomain domain) {
+
+        DriverDomain dbSearchResult = findById(domain.getId()).getOrElse((DriverDomain) null);
+
+        if (dbSearchResult == null)
+            return Either.left(new StructuredError("Could Not Find Account With Specified Id", ErrorType.NOT_FOUND_ERROR));
+
+        return Try.of(() -> driverRepositoryJPA.save(driverMapper.toEntity(domain)))
+                .map(driverMapper::toDomain)
+                .toEither(new StructuredError("Error While Updating Driver",
                         ErrorType.DATABASE_ERROR));
     }
 
@@ -48,6 +64,7 @@ public class DriverRepositoryAdapter  implements DriverRepositoryPort {
     }
 
     @Override
+    @Transactional
     public Either<StructuredError, Void> deleteById(UUID driverId) {
         return Try.run(() -> driverRepositoryJPA.deleteById(driverId)).toEither(new StructuredError("Error While Deleting Driver",
                 ErrorType.DATABASE_ERROR));
