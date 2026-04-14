@@ -1,6 +1,6 @@
 package com.example.FoodDeliveryBackend.infrastructure.security;
 
-import com.example.FoodDeliveryBackend.domain.enums.Roles;
+import com.example.FoodDeliveryBackend.domain.accountCommands.AddAccountCommand;
 import com.example.FoodDeliveryBackend.domain.exception.ErrorType;
 import com.example.FoodDeliveryBackend.domain.exception.StructuredError;
 import com.example.FoodDeliveryBackend.domain.port.out.KeycloakRegistrationPort;
@@ -29,7 +29,10 @@ public class RegistrationService implements KeycloakRegistrationPort {
     }
 
     @Override
-    public Either<StructuredError, Void> registerCustomer(RegisterRequest request, Roles role) {
+    public Either<StructuredError, Void> registerCustomer(AddAccountCommand.SaveAccountInput input) {
+        RegisterRequest request = new RegisterRequest(input.getUsername(), input.getPassword(),
+                input.getEmail(), input.getFirstName(), input.getLastName());
+
         Either<StructuredError, String> tokenEither = getAdminAccessToken();
 
         if (tokenEither.isLeft()) {
@@ -42,7 +45,7 @@ public class RegistrationService implements KeycloakRegistrationPort {
                 .flatMap(userId ->
                         setPassword(adminToken, userId, request.password())
                                 .flatMap(ignored ->
-                                        assignRealmRole(adminToken, userId, role.toString())
+                                        assignRealmRole(adminToken, userId, input.getRole().toString())
                                                 .map(ignored2 -> (Void) null)                                )
                 );
     }

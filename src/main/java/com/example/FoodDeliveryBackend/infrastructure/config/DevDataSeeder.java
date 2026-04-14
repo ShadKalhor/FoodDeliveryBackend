@@ -50,6 +50,7 @@ public class DevDataSeeder {
             for (int i = 0; i < 20; i++) {
                 Account Account = new Account();
                 Account.setRole(Roles.CUSTOMER);
+                Account.setUsername(faker.name().fullName());
                 Account.setFirstName(faker.name().firstName());
                 Account.setLastName(faker.name().lastName());
                 Account.setPhone("07" + (100000000 + random.nextInt(899999999)));

@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 012-add-username-field-account-table
+      author: shad
+      changes:
+        - addColumn:
+            tableName: account
+            columns:
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+

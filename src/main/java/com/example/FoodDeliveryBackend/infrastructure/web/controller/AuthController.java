@@ -1,5 +1,6 @@
 package com.example.FoodDeliveryBackend.infrastructure.web.controller;
 
+import com.example.FoodDeliveryBackend.domain.accountCommands.AddAccountCommand;
 import com.example.FoodDeliveryBackend.domain.enums.Roles;
 import com.example.FoodDeliveryBackend.infrastructure.security.AuthService;
 import com.example.FoodDeliveryBackend.infrastructure.security.RegistrationService;
@@ -30,8 +31,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
-        registrationService.registerCustomer(request, Roles.DRIVER);
+    public ResponseEntity<String> register(@Valid @RequestBody AddAccountCommand.SaveAccountInput request) {
+        registrationService.registerCustomer(request);
         return ResponseEntity.ok("User registered successfully");
     }
 

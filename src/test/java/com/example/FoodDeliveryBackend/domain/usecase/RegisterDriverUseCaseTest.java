@@ -43,6 +43,7 @@ class RegisterDriverUseCaseTest {
 
         RegisterDriverUseCase.RegisterDriverInput input =
                 new RegisterDriverUseCase.RegisterDriverInput(
+                        "JohnDoe",
                         "John","Doe",
                         "07712345678",
                         "john@example.com",
@@ -52,7 +53,7 @@ class RegisterDriverUseCaseTest {
 
         AddAccountCommand.SaveAccountOutput accountOutput =
                 new AddAccountCommand.SaveAccountOutput(
-                        accountId,
+                        accountId,"JohnDoe",
                         "John","Doe",
                         "07712345678",
                         "john@example.com", Roles.DRIVER
@@ -113,6 +114,7 @@ class RegisterDriverUseCaseTest {
         // given
         RegisterDriverUseCase.RegisterDriverInput input =
                 new RegisterDriverUseCase.RegisterDriverInput(
+                        "JohnDoe",
                         "John","Doe",
                         "07712345678",
                         "john@example.com",
@@ -144,6 +146,7 @@ class RegisterDriverUseCaseTest {
 
         RegisterDriverUseCase.RegisterDriverInput input =
                 new RegisterDriverUseCase.RegisterDriverInput(
+                        "JohnDoe",
                         "John","Doe",
                         "07712345678",
                         "john@example.com",
@@ -154,6 +157,7 @@ class RegisterDriverUseCaseTest {
         AddAccountCommand.SaveAccountOutput accountOutput =
                 new AddAccountCommand.SaveAccountOutput(
                         accountId,
+                        "JohnDoe",
                         "John","Doe",
                         "07712345678",
                         "john@example.com",

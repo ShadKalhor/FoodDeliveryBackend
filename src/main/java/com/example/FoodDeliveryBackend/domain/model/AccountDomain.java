@@ -18,6 +18,7 @@ import java.util.UUID;
 public class AccountDomain {
 
     private UUID id;
+    private String username;
     private Roles role;
     private String firstName;
     private String lastName;
