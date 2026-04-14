@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011-remove-name-field-accounts-table
+      author: shad
+      changes:
+        - dropColumn:
+            tableName: account   
+            columnName: name

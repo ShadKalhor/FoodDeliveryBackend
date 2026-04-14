@@ -20,7 +20,8 @@ public class RegisterDriverUseCase {
     public Either<StructuredError, RegisterDriverOutput> execute(RegisterDriverInput input) {
         return addAccountCommand.execute(
                         new AddAccountCommand.SaveAccountInput(
-                                input.getName(),
+                                input.getFirstName(),
+                                input.getLastName(),
                                 input.getPhone(),
                                 input.getEmail(),
                                 input.getPassword(),
@@ -41,7 +42,8 @@ public class RegisterDriverUseCase {
 
     @Value
     public static class RegisterDriverInput {
-        String name;
+        String firstName;
+        String lastName;
         String phone;
         String email;
         String password;
@@ -52,7 +54,8 @@ public class RegisterDriverUseCase {
     public static class RegisterDriverOutput {
         UUID accountId;
         UUID driverId;
-        String name;
+        String firstName;
+        String lastName;
         String email;
         String phone;
         VehicleType vehicleType;
@@ -64,7 +67,8 @@ public class RegisterDriverUseCase {
             return new RegisterDriverOutput(
                     account.getId(),
                     driver.getId(),
-                    account.getName(),
+                    account.getFirstName(),
+                    account.getLastName(),
                     account.getEmail(),
                     account.getPhone(),
                     driver.getVehicleType()

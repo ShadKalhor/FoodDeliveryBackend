@@ -15,3 +15,9 @@ databaseChangeLog:
       file: db/changelog/changes/007-create-driver-table.yaml
   - include:
       file: db/changelog/changes/008-create-delivery-table.yaml
+  - include:
+      file: db/changelog/changes/009-add-firstname-lastname-fields-user-table.yaml
+  - include:
+      file: db/changelog/changes/010-rename-users-table-to-account-table.yaml
+  - include:
+      file: db/changelog/changes/011-remove-name-field-account-table.yaml

@@ -50,7 +50,8 @@ public class DevDataSeeder {
             for (int i = 0; i < 20; i++) {
                 Account Account = new Account();
                 Account.setRole(Roles.CUSTOMER);
-                Account.setName(faker.name().fullName());
+                Account.setFirstName(faker.name().firstName());
+                Account.setLastName(faker.name().lastName());
                 Account.setPhone("07" + (100000000 + random.nextInt(899999999)));
                 Account.setEmail("customer" + i + "@test.com");
                 Account.setPassword("$2a$10$examplehashedpassword");
@@ -62,7 +63,8 @@ public class DevDataSeeder {
             for (int i = 0; i < 5; i++) {
                 Account Account = new Account();
                 Account.setRole(Roles.RESTAURANT_ADMIN);
-                Account.setName(faker.name().fullName());
+                Account.setFirstName(faker.name().firstName());
+                Account.setLastName(faker.name().lastName());
                 Account.setPhone("07" + (100000000 + random.nextInt(899999999)));
                 Account.setEmail("owner" + i + "@test.com");
                 Account.setPassword("$2a$10$examplehashedpassword");
@@ -74,7 +76,8 @@ public class DevDataSeeder {
             for (int i = 0; i < 5; i++) {
                 Account Account = new Account();
                 Account.setRole(Roles.DRIVER);
-                Account.setName(faker.name().fullName());
+                Account.setFirstName(faker.name().firstName());
+                Account.setLastName(faker.name().lastName());
                 Account.setPhone("07" + (100000000 + random.nextInt(899999999)));
                 Account.setEmail("driver" + i + "@test.com");
                 Account.setPassword("$2a$10$examplehashedpassword");

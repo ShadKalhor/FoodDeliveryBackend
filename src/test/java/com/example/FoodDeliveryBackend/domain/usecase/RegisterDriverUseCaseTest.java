@@ -43,7 +43,7 @@ class RegisterDriverUseCaseTest {
 
         RegisterDriverUseCase.RegisterDriverInput input =
                 new RegisterDriverUseCase.RegisterDriverInput(
-                        "John Doe",
+                        "John","Doe",
                         "07712345678",
                         "john@example.com",
                         "password123",
@@ -53,7 +53,7 @@ class RegisterDriverUseCaseTest {
         AddAccountCommand.SaveAccountOutput accountOutput =
                 new AddAccountCommand.SaveAccountOutput(
                         accountId,
-                        "John Doe",
+                        "John","Doe",
                         "07712345678",
                         "john@example.com", Roles.DRIVER
                 );
@@ -82,7 +82,8 @@ class RegisterDriverUseCaseTest {
         RegisterDriverUseCase.RegisterDriverOutput output = result.get();
         assertEquals(accountId, output.getAccountId());
         assertEquals(driverId, output.getDriverId());
-        assertEquals("John Doe", output.getName());
+        assertEquals("John", output.getFirstName());
+        assertEquals(" Doe", output.getLastName());
         assertEquals("john@example.com", output.getEmail());
         assertEquals("07712345678", output.getPhone());
         assertEquals(VehicleType.CAR, output.getVehicleType());
@@ -92,7 +93,8 @@ class RegisterDriverUseCaseTest {
         verify(addAccountCommand).execute(accountCaptor.capture());
 
         AddAccountCommand.SaveAccountInput capturedAccountInput = accountCaptor.getValue();
-        assertEquals("John Doe", capturedAccountInput.getName());
+        assertEquals("John", capturedAccountInput.getFirstName());
+        assertEquals("Doe", capturedAccountInput.getLastName());
         assertEquals("07712345678", capturedAccountInput.getPhone());
         assertEquals("john@example.com", capturedAccountInput.getEmail());
         assertEquals("password123", capturedAccountInput.getPassword());
@@ -111,7 +113,7 @@ class RegisterDriverUseCaseTest {
         // given
         RegisterDriverUseCase.RegisterDriverInput input =
                 new RegisterDriverUseCase.RegisterDriverInput(
-                        "John Doe",
+                        "John","Doe",
                         "07712345678",
                         "john@example.com",
                         "password123",
@@ -142,7 +144,7 @@ class RegisterDriverUseCaseTest {
 
         RegisterDriverUseCase.RegisterDriverInput input =
                 new RegisterDriverUseCase.RegisterDriverInput(
-                        "John Doe",
+                        "John","Doe",
                         "07712345678",
                         "john@example.com",
                         "password123",
@@ -152,9 +154,9 @@ class RegisterDriverUseCaseTest {
         AddAccountCommand.SaveAccountOutput accountOutput =
                 new AddAccountCommand.SaveAccountOutput(
                         accountId,
-                        "john@example.com",
+                        "John","Doe",
                         "07712345678",
-                        "John Doe",
+                        "john@example.com",
                         Roles.DRIVER
                 );
 

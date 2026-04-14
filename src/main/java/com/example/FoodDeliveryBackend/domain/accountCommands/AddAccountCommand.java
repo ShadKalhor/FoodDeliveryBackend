@@ -27,14 +27,15 @@ public class AddAccountCommand {
     @Value
     public static class SaveAccountInput{
 
-        String name;
+        String firstName;
+        String lastName;
         String phone;
         String email;
         String password;
         Roles role;
 
         private AccountDomain toParams(){
-            return new AccountDomain(UUID.randomUUID(),role,name,phone,email,password, UserStatus.ONLINE, Instant.now());
+            return new AccountDomain(UUID.randomUUID(),role,firstName,lastName,phone,email,password, UserStatus.ONLINE, Instant.now());
         }
 
     }
@@ -43,13 +44,14 @@ public class AddAccountCommand {
     public static class SaveAccountOutput{
 
         UUID id;
-        String name;
+        String firstName;
+        String lastName;
         String phone;
         String email;
         Roles role;
 
         private static SaveAccountOutput of(AccountDomain domain){
-            return new SaveAccountOutput(domain.getId(), domain.getName(),
+            return new SaveAccountOutput(domain.getId(), domain.getFirstName(),domain.getLastName(),
                     domain.getPhone(), domain.getEmail(), domain.getRole());
         }
 
