@@ -1,21 +1,24 @@
 package com.example.FoodDeliveryBackend.infrastructure.security;
 
+import com.example.FoodDeliveryBackend.domain.enums.Roles;
+import com.example.FoodDeliveryBackend.domain.exception.ErrorType;
+import com.example.FoodDeliveryBackend.domain.exception.StructuredError;
+import com.example.FoodDeliveryBackend.domain.port.out.KeycloakRegistrationPort;
 import com.example.FoodDeliveryBackend.infrastructure.web.dto.auth.*;
+import io.vavr.control.Either;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.List;
 
 @Service
-public class RegistrationService {
+public class RegistrationService implements KeycloakRegistrationPort {
 
     private final RestClient restClient;
     private final KeycloakProperties keycloakProperties;
@@ -25,42 +28,58 @@ public class RegistrationService {
         this.keycloakProperties = keycloakProperties;
     }
 
-    public void registerCustomer(RegisterRequest request) {
-        String adminToken = getAdminAccessToken();
+    @Override
+    public Either<StructuredError, Void> registerCustomer(RegisterRequest request, Roles role) {
+        Either<StructuredError, String> tokenEither = getAdminAccessToken();
 
-        String userId = createUser(adminToken, request);
-        setPassword(adminToken, userId, request.password());
-        assignRealmRole(adminToken, userId, "CUSTOMER");
+        if (tokenEither.isLeft()) {
+            return Either.left(tokenEither.getLeft());
+        }
+
+        String adminToken = tokenEither.get();
+
+        return createUser(adminToken, request)
+                .flatMap(userId ->
+                        setPassword(adminToken, userId, request.password())
+                                .flatMap(ignored ->
+                                        assignRealmRole(adminToken, userId, role.toString())
+                                                .map(ignored2 -> (Void) null)                                )
+                );
     }
 
-    private String getAdminAccessToken() {
+    private Either<StructuredError, String> getAdminAccessToken() {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
         form.add("grant_type", "password");
         form.add("client_id", keycloakProperties.getAdmin().getClientId());
         form.add("username", keycloakProperties.getAdmin().getUsername());
         form.add("password", keycloakProperties.getAdmin().getPassword());
 
-        AdminTokenResponse response = restClient.post()
+        return restClient.post()
                 .uri(keycloakProperties.adminTokenUrl())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(form)
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, (req, res) -> {
-                    throw new ResponseStatusException(
-                            res.getStatusCode(),
-                            "Failed to get admin token from Keycloak"
-                    );
-                })
-                .body(AdminTokenResponse.class);
+                .exchange((req, res) -> {
 
-        if (response == null || response.accessToken() == null || response.accessToken().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Admin token was empty");
-        }
+                    if (res.getStatusCode().isError()) {
+                        return Either.left(new StructuredError(
+                                "Keycloak returned error: " + res.getStatusCode(),
+                                ErrorType.SERVER_ERROR
+                        ));
+                    }
 
-        return response.accessToken();
+                    AdminTokenResponse body = res.bodyTo(AdminTokenResponse.class);
+
+                    if (body == null || body.accessToken() == null) {
+                        return Either.left(new StructuredError(
+                                "Invalid Keycloak response",
+                                ErrorType.SERVER_ERROR
+                        ));
+                    }
+
+                    return Either.right(body.accessToken());
+                });
     }
-
-    private String createUser(String adminToken, RegisterRequest request) {
+    private Either<StructuredError, String> createUser(String adminToken, RegisterRequest request) {
         KeycloakUserCreateRequest body = new KeycloakUserCreateRequest(
                 request.username(),
                 request.email(),
@@ -70,77 +89,98 @@ public class RegistrationService {
                 true
         );
 
-        var response = restClient.post()
+        return restClient.post()
                 .uri(keycloakProperties.usersAdminUrl())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
                 .body(body)
-                .retrieve()
-                .toBodilessEntity();
+                .exchange((req, res) -> {
+                    if (!res.getStatusCode().equals(HttpStatus.CREATED)) {
+                        return Either.left(new StructuredError(
+                                "Failed to create user in Keycloak",
+                                ErrorType.SERVER_ERROR
+                        ));
+                    }
 
-        if (response.getStatusCode() != HttpStatus.CREATED) {
-            throw new ResponseStatusException(
-                    response.getStatusCode(),
-                    "Failed to create user in Keycloak"
-            );
-        }
+                    URI location = res.getHeaders().getLocation();
+                    if (location == null) {
+                        return Either.left(new StructuredError(
+                                "Missing user location header from Keycloak",
+                                ErrorType.SERVER_ERROR
+                        ));
+                    }
 
-        URI location = response.getHeaders().getLocation();
-        if (location == null) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Missing user location header");
-        }
+                    String path = location.getPath();
+                    String userId = path.substring(path.lastIndexOf('/') + 1);
 
-        String path = location.getPath();
-        return path.substring(path.lastIndexOf('/') + 1);
+                    return Either.right(userId);
+                });
     }
 
-    private void setPassword(String adminToken, String userId, String rawPassword) {
-        KeycloakCredential credential = new KeycloakCredential("password", rawPassword, false);
-
-        restClient.put()
-                .uri(keycloakProperties.resetPasswordUrl(userId))
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
-                .body(credential)
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, (req, res) -> {
-                    throw new ResponseStatusException(
-                            res.getStatusCode(),
-                            "Failed to set password in Keycloak"
-                    );
-                })
-                .toBodilessEntity();
-    }
-
-    private void assignRealmRole(String adminToken, String userId, String roleName) {
-        KeycloakRoleRepresentation role = restClient.get()
+    private Either<StructuredError, Void> assignRealmRole(String adminToken, String userId, String roleName) {
+        Either<StructuredError, KeycloakRoleRepresentation> roleEither = restClient.get()
                 .uri(keycloakProperties.realmRoleByNameUrl(roleName))
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, (req, res) -> {
-                    throw new ResponseStatusException(
-                            res.getStatusCode(),
-                            "Failed to fetch realm role from Keycloak"
-                    );
-                })
-                .body(KeycloakRoleRepresentation.class);
+                .exchange((req, res) -> {
+                    if (res.getStatusCode().isError()) {
+                        return Either.left(new StructuredError(
+                                "Failed to fetch realm role from Keycloak",
+                                ErrorType.SERVER_ERROR
+                        ));
+                    }
 
-        if (role == null) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Role not found: " + roleName);
+                    KeycloakRoleRepresentation role = res.bodyTo(KeycloakRoleRepresentation.class);
+
+                    if (role == null) {
+                        return Either.left(new StructuredError(
+                                "Role not found in Keycloak: " + roleName,
+                                ErrorType.SERVER_ERROR
+                        ));
+                    }
+
+                    return Either.right(role);
+                });
+
+        if (roleEither.isLeft()) {
+            return Either.left(roleEither.getLeft());
         }
 
-        restClient.post()
+        KeycloakRoleRepresentation role = roleEither.get();
+
+        return restClient.post()
                 .uri(keycloakProperties.realmRolesUrl(userId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
                 .body(List.of(role))
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, (req, res) -> {
-                    throw new ResponseStatusException(
-                            res.getStatusCode(),
-                            "Failed to assign realm role in Keycloak"
-                    );
-                })
-                .toBodilessEntity();
+                .exchange((req, res) -> {
+                    if (res.getStatusCode().isError()) {
+                        return Either.left(new StructuredError(
+                                "Failed to assign realm role in Keycloak",
+                                ErrorType.SERVER_ERROR
+                        ));
+                    }
+
+                    return Either.right(null);
+                });
+    }
+
+    private Either<StructuredError, Void> setPassword(String adminToken, String userId, String rawPassword) {
+        KeycloakCredential credential = new KeycloakCredential("password", rawPassword, false);
+
+        return restClient.put()
+                .uri(keycloakProperties.resetPasswordUrl(userId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
+                .body(credential)
+                .exchange((req, res) -> {
+                    if (res.getStatusCode().isError()) {
+                        return Either.left(new StructuredError(
+                                "Failed to set password in Keycloak",
+                                ErrorType.SERVER_ERROR
+                        ));
+                    }
+
+                    return Either.right(null);
+                });
     }
 }
