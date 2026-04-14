@@ -15,7 +15,7 @@ public class OrderDomain {
 
     private UUID id;
     private UUID customerId;
-    private UUID resturantId;
+    private UUID restaurantId;
     private UUID deliveryAddressId;
     private OrderStatus status;
     @Embedded
