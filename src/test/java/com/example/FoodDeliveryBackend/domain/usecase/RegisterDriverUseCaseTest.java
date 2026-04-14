@@ -84,7 +84,7 @@ class RegisterDriverUseCaseTest {
         assertEquals(accountId, output.getAccountId());
         assertEquals(driverId, output.getDriverId());
         assertEquals("John", output.getFirstName());
-        assertEquals(" Doe", output.getLastName());
+        assertEquals("Doe", output.getLastName());
         assertEquals("john@example.com", output.getEmail());
         assertEquals("07712345678", output.getPhone());
         assertEquals(VehicleType.CAR, output.getVehicleType());
