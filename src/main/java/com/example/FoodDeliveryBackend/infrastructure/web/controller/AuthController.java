@@ -31,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
-        registrationService.registerCustomer(request);
+        registrationService.registerCustomer(request, Roles.DRIVER);
         return ResponseEntity.ok("User registered successfully");
     }
 
