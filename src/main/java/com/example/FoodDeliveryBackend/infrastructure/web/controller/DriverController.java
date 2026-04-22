@@ -1,12 +1,11 @@
 package com.example.FoodDeliveryBackend.infrastructure.web.controller;
 
 import com.example.FoodDeliveryBackend.domain.enums.VehicleType;
-import com.example.FoodDeliveryBackend.domain.usecase.RegisterDriverUseCase;
+import com.example.FoodDeliveryBackend.domain.usecase.driver.RegisterDriverUseCase;
 import com.example.FoodDeliveryBackend.infrastructure.web.advice.ErrorStructureException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
