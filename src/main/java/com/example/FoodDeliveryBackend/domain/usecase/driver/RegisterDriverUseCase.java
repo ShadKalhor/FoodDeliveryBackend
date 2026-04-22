@@ -1,4 +1,4 @@
-package com.example.FoodDeliveryBackend.domain.usecase;
+package com.example.FoodDeliveryBackend.domain.usecase.driver;
 
 import com.example.FoodDeliveryBackend.domain.accountCommands.AddAccountCommand;
 import com.example.FoodDeliveryBackend.domain.driverCommands.AddDriverCommand;
