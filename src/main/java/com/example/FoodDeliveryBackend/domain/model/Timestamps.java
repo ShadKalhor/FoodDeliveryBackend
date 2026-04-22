@@ -21,4 +21,9 @@ public class Timestamps {
     private Instant pickedUpAt;
     private Instant deliveredAt;
     private Instant cancelledAt;
+
+    public Timestamps(Instant createdAt){
+        this.createdAt = createdAt;
+    }
+
 }
