@@ -5,6 +5,7 @@ import com.example.FoodDeliveryBackend.domain.driverCommands.AddDriverCommand;
 import com.example.FoodDeliveryBackend.domain.enums.Roles;
 import com.example.FoodDeliveryBackend.domain.enums.VehicleType;
 import com.example.FoodDeliveryBackend.domain.exception.StructuredError;
+import com.example.FoodDeliveryBackend.domain.usecase.driver.RegisterDriverUseCase;
 import io.vavr.control.Either;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
