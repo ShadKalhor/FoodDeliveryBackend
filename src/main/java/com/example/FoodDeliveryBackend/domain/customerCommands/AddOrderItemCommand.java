@@ -1,4 +1,4 @@
-package com.example.FoodDeliveryBackend.domain.CustomerCommands;
+package com.example.FoodDeliveryBackend.domain.customerCommands;
 
 import com.example.FoodDeliveryBackend.domain.exception.ErrorType;
 import com.example.FoodDeliveryBackend.domain.exception.StructuredError;

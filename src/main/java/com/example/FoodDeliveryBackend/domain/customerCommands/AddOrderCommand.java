@@ -1,4 +1,4 @@
-package com.example.FoodDeliveryBackend.domain.CustomerCommands;
+package com.example.FoodDeliveryBackend.domain.customerCommands;
 
 import com.example.FoodDeliveryBackend.domain.enums.OrderStatus;
 import com.example.FoodDeliveryBackend.domain.enums.PaymentStatus;
