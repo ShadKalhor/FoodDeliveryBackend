@@ -12,10 +12,13 @@ import com.example.FoodDeliveryBackend.infrastructure.persistence.repository.Ord
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+
+
 
 @RequiredArgsConstructor
 public class OrderRepositoryAdapter implements OrderRepositoryPort {
@@ -29,15 +32,15 @@ public class OrderRepositoryAdapter implements OrderRepositoryPort {
     @Override
     public Either<StructuredError, OrderDomain> save(OrderDomain domain) {
 
-        Try.run(() -> {
+        return Try.run(() -> {
             List<OrderItem> itemEntities = domain.getItems().stream().map(orderItemMapper::toEntity).toList();
             orderItemRepositoryJPA.saveAll(itemEntities);
-        }).toEither(new StructuredError("Error While Saving Order Items", ErrorType.DATABASE_ERROR));
-
-        return Try.of(() ->orderRepositoryJPA.save(orderMapper.toEntity(domain)))
-                .map(orderMapper::toDomain)
-                .toEither(() -> new StructuredError("Error While Saving Order",
-                        ErrorType.DATABASE_ERROR));
+        }).toEither(new StructuredError("Error While Saving Order Items", ErrorType.DATABASE_ERROR))
+                .flatMap(ignored ->
+                        Try.of(() ->orderRepositoryJPA.save(orderMapper.toEntity(domain)))
+                                .map(orderMapper::toDomain)
+                                .toEither(() -> new StructuredError("Error While Saving Order",
+                                        ErrorType.DATABASE_ERROR)));
     }
 
     @Override
