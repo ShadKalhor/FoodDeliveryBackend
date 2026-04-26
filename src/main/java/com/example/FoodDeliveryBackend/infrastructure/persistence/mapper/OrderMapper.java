@@ -12,7 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 )
 public interface OrderMapper {
 
-    @Mapping(target = "items", ignore = true)
     OrderDomain toDomain(Order entity);
 
     Order toEntity(OrderDomain orderDomain);

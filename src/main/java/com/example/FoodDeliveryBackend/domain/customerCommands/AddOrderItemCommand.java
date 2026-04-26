@@ -13,7 +13,7 @@ import java.util.UUID;
 public class AddOrderItemCommand {
 
 
-    public Either<StructuredError, OrderItemDomain> execute(AddItemInput input){
+    public Either<StructuredError, OrderItemDomain> execute(Input input){
 
         return Try.of(() -> {
             OrderItemDomain orderItemDomain = input.toParams();
@@ -26,7 +26,7 @@ public class AddOrderItemCommand {
 
 
     @Value
-    public static class AddItemInput{
+    public static class Input{
 
         UUID orderId;
         UUID menuItemId;
@@ -42,12 +42,12 @@ public class AddOrderItemCommand {
     }
 
     @Value
-    public static class AddItemOutput{
+    public static class Output{
 
         UUID orderId;
 
-        static AddItemOutput of(OrderItemDomain orderItemDomain){
-            return new AddItemOutput(orderItemDomain.getId());
+        static Output of(OrderItemDomain orderItemDomain){
+            return new Output(orderItemDomain.getId());
         }
 
     }

@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody AddAccountCommand.SaveAccountInput request) {
+    public ResponseEntity<String> register(@Valid @RequestBody AddAccountCommand.Input request) {
         registrationService.registerCustomer(request);
         return ResponseEntity.ok("User registered successfully");
     }

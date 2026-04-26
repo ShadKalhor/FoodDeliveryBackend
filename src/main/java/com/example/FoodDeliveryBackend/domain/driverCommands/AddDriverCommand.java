@@ -17,13 +17,13 @@ public class AddDriverCommand {
     private final DriverRepositoryPort driverRepositoryPort;
 
 
-    public Either<StructuredError, SaveDriverOutput> execute(SaveDriverInput input){
-        return driverRepositoryPort.save(input.toParams()).map(SaveDriverOutput::of);
+    public Either<StructuredError, Output> execute(Input input){
+        return driverRepositoryPort.save(input.toParams()).map(Output::of);
     }
 
 
     @Value
-    public static class SaveDriverInput{
+    public static class Input{
 
         UUID accountId;
         VehicleType vehicleType;
@@ -37,15 +37,15 @@ public class AddDriverCommand {
     }
 
     @Value
-    public static class SaveDriverOutput{
+    public static class Output{
 
         UUID id;
         UUID accountId;
         VehicleType vehicleType;
         BigDecimal avgRating;
 
-        static SaveDriverOutput of(DriverDomain domain) {
-            return new SaveDriverOutput(domain.getId(), domain.getUserId(),
+        static Output of(DriverDomain domain) {
+            return new Output(domain.getId(), domain.getUserId(),
                     domain.getVehicleType(), domain.getAvgRating());
         }
 

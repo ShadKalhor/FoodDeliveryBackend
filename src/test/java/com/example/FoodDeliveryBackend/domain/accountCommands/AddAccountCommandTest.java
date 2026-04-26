@@ -39,7 +39,7 @@ class AddAccountCommandTest {
     @Test
     void shouldAddAccountSuccessfully() {
         // given
-        AddAccountCommand.SaveAccountInput input = new AddAccountCommand.SaveAccountInput(
+        AddAccountCommand.Input input = new AddAccountCommand.Input(
                 "shad",
                 "Shad",
                 "Ali",
@@ -69,12 +69,12 @@ class AddAccountCommandTest {
                 .thenReturn(Either.right(savedAccount));
 
         // when
-        Either<StructuredError, AddAccountCommand.SaveAccountOutput> result = addAccountCommand.execute(input);
+        Either<StructuredError, AddAccountCommand.Output> result = addAccountCommand.execute(input);
 
         // then
         assertTrue(result.isRight());
 
-        AddAccountCommand.SaveAccountOutput output = result.get();
+        AddAccountCommand.Output output = result.get();
         assertEquals(savedAccount.getId(), output.getId());
         assertEquals(savedAccount.getUsername(), output.getUsername());
         assertEquals(savedAccount.getFirstName(), output.getFirstName());
@@ -104,7 +104,7 @@ class AddAccountCommandTest {
     @Test
     void shouldReturnLeftWhenKeycloakRegistrationFails() {
         // given
-        AddAccountCommand.SaveAccountInput input = new AddAccountCommand.SaveAccountInput(
+        AddAccountCommand.Input input = new AddAccountCommand.Input(
                 "shad",
                 "Shad",
                 "Ali",
@@ -120,7 +120,7 @@ class AddAccountCommandTest {
                 .thenReturn(Either.left(error));
 
         // when
-        Either<StructuredError, AddAccountCommand.SaveAccountOutput> result = addAccountCommand.execute(input);
+        Either<StructuredError, AddAccountCommand.Output> result = addAccountCommand.execute(input);
 
         // then
         assertTrue(result.isLeft());
@@ -133,7 +133,7 @@ class AddAccountCommandTest {
     @Test
     void shouldReturnLeftWhenRepositorySaveFails() {
         // given
-        AddAccountCommand.SaveAccountInput input = new AddAccountCommand.SaveAccountInput(
+        AddAccountCommand.Input input = new AddAccountCommand.Input(
                 "shad",
                 "Shad",
                 "Ali",
@@ -152,7 +152,7 @@ class AddAccountCommandTest {
                 .thenReturn(Either.left(error));
 
         // when
-        Either<StructuredError, AddAccountCommand.SaveAccountOutput> result = addAccountCommand.execute(input);
+        Either<StructuredError, AddAccountCommand.Output> result = addAccountCommand.execute(input);
 
         // then
         assertTrue(result.isLeft());

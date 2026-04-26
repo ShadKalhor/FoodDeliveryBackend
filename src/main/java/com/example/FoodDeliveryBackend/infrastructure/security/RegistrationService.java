@@ -29,7 +29,7 @@ public class RegistrationService implements KeycloakRegistrationPort {
     }
 
     @Override
-    public Either<StructuredError, Void> registerCustomer(AddAccountCommand.SaveAccountInput input) {
+    public Either<StructuredError, Void> registerCustomer(AddAccountCommand.Input input) {
         RegisterRequest request = new RegisterRequest(input.getUsername(), input.getPassword(),
                 input.getEmail(), input.getFirstName(), input.getLastName());
 

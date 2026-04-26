@@ -36,8 +36,8 @@ class AddDriverCommandTest {
         // given
         UUID accountId = UUID.randomUUID();
 
-        AddDriverCommand.SaveDriverInput input =
-                new AddDriverCommand.SaveDriverInput(accountId, VehicleType.CAR);
+        AddDriverCommand.Input input =
+                new AddDriverCommand.Input(accountId, VehicleType.CAR);
 
         DriverDomain savedDriver = new DriverDomain(
                 UUID.randomUUID(),
@@ -53,13 +53,13 @@ class AddDriverCommandTest {
                 .thenReturn(Either.right(savedDriver));
 
         // when
-        Either<StructuredError, AddDriverCommand.SaveDriverOutput> result =
+        Either<StructuredError, AddDriverCommand.Output> result =
                 addDriverCommand.execute(input);
 
         // then
         assertTrue(result.isRight());
 
-        AddDriverCommand.SaveDriverOutput output = result.get();
+        AddDriverCommand.Output output = result.get();
 
         assertEquals(savedDriver.getId(), output.getId());
         assertEquals(savedDriver.getUserId(), output.getAccountId());
@@ -86,8 +86,8 @@ class AddDriverCommandTest {
         // given
         UUID accountId = UUID.randomUUID();
 
-        AddDriverCommand.SaveDriverInput input =
-                new AddDriverCommand.SaveDriverInput(accountId, VehicleType.BIKE);
+        AddDriverCommand.Input input =
+                new AddDriverCommand.Input(accountId, VehicleType.BIKE);
 
         StructuredError error = mock(StructuredError.class);
 
@@ -95,7 +95,7 @@ class AddDriverCommandTest {
                 .thenReturn(Either.left(error));
 
         // when
-        Either<StructuredError, AddDriverCommand.SaveDriverOutput> result =
+        Either<StructuredError, AddDriverCommand.Output> result =
                 addDriverCommand.execute(input);
 
         // then

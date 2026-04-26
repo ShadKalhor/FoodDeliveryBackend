@@ -6,7 +6,7 @@ import io.vavr.control.Either;
 
 public interface KeycloakRegistrationPort {
 
-    Either<StructuredError, Void> registerCustomer(AddAccountCommand.SaveAccountInput input);
+    Either<StructuredError, Void> registerCustomer(AddAccountCommand.Input input);
 
 
 }

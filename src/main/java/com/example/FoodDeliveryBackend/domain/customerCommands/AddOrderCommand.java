@@ -29,7 +29,7 @@ public class AddOrderCommand {
     private final AddOrderItemCommand addOrderItemCommand = new AddOrderItemCommand();
     private final OrderPricingService orderPricingService = new OrderPricingService();
 
-    public Either<StructuredError, AddOrderOutput> execute(AddOrderInput input) {
+    public Either<StructuredError, AddOrderOutput> execute(Input input) {
 
         return Try.of(() ->
                 addItems(input.itemsInput)
@@ -52,11 +52,11 @@ public class AddOrderCommand {
 
     }
 
-    private Either<StructuredError, List<OrderItemDomain>> addItems(List<AddOrderItemCommand.AddItemInput> itemInputs){
+    private Either<StructuredError, List<OrderItemDomain>> addItems(List<AddOrderItemCommand.Input> itemInputs){
 
         List<OrderItemDomain> itemOutputs = new ArrayList<>();
 
-        for (AddOrderItemCommand.AddItemInput item : itemInputs) {
+        for (AddOrderItemCommand.Input item : itemInputs) {
 
             Either<StructuredError,OrderItemDomain> result =
                     addOrderItemCommand.execute(item);
@@ -71,7 +71,7 @@ public class AddOrderCommand {
     }
 
     @Value
-    public static class AddOrderInput {
+    public static class Input {
 
         @NotNull
         UUID customerId;
@@ -80,7 +80,7 @@ public class AddOrderCommand {
         @NotNull
         UUID deliveryAddressId;
         @NotNull@NotEmpty
-        List<AddOrderItemCommand.AddItemInput> itemsInput;
+        List<AddOrderItemCommand.Input> itemsInput;
 
         private OrderDomain toParams() {
 
@@ -101,7 +101,7 @@ public class AddOrderCommand {
         OrderStatus status;
         Pricing pricing;
         Timestamps timestamps;
-        List<AddOrderItemCommand.AddItemOutput> items;
+        List<AddOrderItemCommand.Output> items;
         PaymentStatus paymentStatus;
 
         private static AddOrderOutput of(OrderDomain orderDomain) {
@@ -114,7 +114,7 @@ public class AddOrderCommand {
                     orderDomain.getPricing(),
                     orderDomain.getTimestamps(),
                     orderDomain.getItems().stream()
-                            .map(AddOrderItemCommand.AddItemOutput::of)
+                            .map(AddOrderItemCommand.Output::of)
                             .toList(),
                     orderDomain.getPaymentStatus()
             );

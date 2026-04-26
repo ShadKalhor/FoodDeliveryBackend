@@ -52,26 +52,26 @@ class RegisterDriverUseCaseTest {
                         VehicleType.CAR
                 );
 
-        AddAccountCommand.SaveAccountOutput accountOutput =
-                new AddAccountCommand.SaveAccountOutput(
+        AddAccountCommand.Output accountOutput =
+                new AddAccountCommand.Output(
                         accountId,"JohnDoe",
                         "John","Doe",
                         "07712345678",
                         "john@example.com", Roles.DRIVER
                 );
 
-        AddDriverCommand.SaveDriverOutput driverOutput =
-                new AddDriverCommand.SaveDriverOutput(
+        AddDriverCommand.Output driverOutput =
+                new AddDriverCommand.Output(
                         driverId,
                         accountId,
                         VehicleType.CAR,
                         BigDecimal.ZERO
                 );
 
-        when(addAccountCommand.execute(any(AddAccountCommand.SaveAccountInput.class)))
+        when(addAccountCommand.execute(any(AddAccountCommand.Input.class)))
                 .thenReturn(Either.right(accountOutput));
 
-        when(addDriverCommand.execute(any(AddDriverCommand.SaveDriverInput.class)))
+        when(addDriverCommand.execute(any(AddDriverCommand.Input.class)))
                 .thenReturn(Either.right(driverOutput));
 
         // when
@@ -90,22 +90,22 @@ class RegisterDriverUseCaseTest {
         assertEquals("07712345678", output.getPhone());
         assertEquals(VehicleType.CAR, output.getVehicleType());
 
-        ArgumentCaptor<AddAccountCommand.SaveAccountInput> accountCaptor =
-                ArgumentCaptor.forClass(AddAccountCommand.SaveAccountInput.class);
+        ArgumentCaptor<AddAccountCommand.Input> accountCaptor =
+                ArgumentCaptor.forClass(AddAccountCommand.Input.class);
         verify(addAccountCommand).execute(accountCaptor.capture());
 
-        AddAccountCommand.SaveAccountInput capturedAccountInput = accountCaptor.getValue();
+        AddAccountCommand.Input capturedAccountInput = accountCaptor.getValue();
         assertEquals("John", capturedAccountInput.getFirstName());
         assertEquals("Doe", capturedAccountInput.getLastName());
         assertEquals("07712345678", capturedAccountInput.getPhone());
         assertEquals("john@example.com", capturedAccountInput.getEmail());
         assertEquals("password123", capturedAccountInput.getPassword());
 
-        ArgumentCaptor<AddDriverCommand.SaveDriverInput> driverCaptor =
-                ArgumentCaptor.forClass(AddDriverCommand.SaveDriverInput.class);
+        ArgumentCaptor<AddDriverCommand.Input> driverCaptor =
+                ArgumentCaptor.forClass(AddDriverCommand.Input.class);
         verify(addDriverCommand).execute(driverCaptor.capture());
 
-        AddDriverCommand.SaveDriverInput capturedDriverInput = driverCaptor.getValue();
+        AddDriverCommand.Input capturedDriverInput = driverCaptor.getValue();
         assertEquals(accountId, capturedDriverInput.getAccountId());
         assertEquals(VehicleType.CAR, capturedDriverInput.getVehicleType());
     }
@@ -125,7 +125,7 @@ class RegisterDriverUseCaseTest {
 
         StructuredError error = mock(StructuredError.class);
 
-        when(addAccountCommand.execute(any(AddAccountCommand.SaveAccountInput.class)))
+        when(addAccountCommand.execute(any(AddAccountCommand.Input.class)))
                 .thenReturn(Either.left(error));
 
         // when
@@ -136,7 +136,7 @@ class RegisterDriverUseCaseTest {
         assertTrue(result.isLeft());
         assertSame(error, result.getLeft());
 
-        verify(addAccountCommand).execute(any(AddAccountCommand.SaveAccountInput.class));
+        verify(addAccountCommand).execute(any(AddAccountCommand.Input.class));
         verifyNoInteractions(addDriverCommand);
     }
 
@@ -155,8 +155,8 @@ class RegisterDriverUseCaseTest {
                         VehicleType.BIKE
                 );
 
-        AddAccountCommand.SaveAccountOutput accountOutput =
-                new AddAccountCommand.SaveAccountOutput(
+        AddAccountCommand.Output accountOutput =
+                new AddAccountCommand.Output(
                         accountId,
                         "JohnDoe",
                         "John","Doe",
@@ -167,10 +167,10 @@ class RegisterDriverUseCaseTest {
 
         StructuredError error = mock(StructuredError.class);
 
-        when(addAccountCommand.execute(any(AddAccountCommand.SaveAccountInput.class)))
+        when(addAccountCommand.execute(any(AddAccountCommand.Input.class)))
                 .thenReturn(Either.right(accountOutput));
 
-        when(addDriverCommand.execute(any(AddDriverCommand.SaveDriverInput.class)))
+        when(addDriverCommand.execute(any(AddDriverCommand.Input.class)))
                 .thenReturn(Either.left(error));
 
         // when
@@ -181,7 +181,7 @@ class RegisterDriverUseCaseTest {
         assertTrue(result.isLeft());
         assertSame(error, result.getLeft());
 
-        verify(addAccountCommand).execute(any(AddAccountCommand.SaveAccountInput.class));
-        verify(addDriverCommand).execute(any(AddDriverCommand.SaveDriverInput.class));
+        verify(addAccountCommand).execute(any(AddAccountCommand.Input.class));
+        verify(addDriverCommand).execute(any(AddDriverCommand.Input.class));
     }
 }

@@ -19,7 +19,7 @@ public class RegisterDriverUseCase {
 
     public Either<StructuredError, RegisterDriverOutput> execute(RegisterDriverInput input) {
         return addAccountCommand.execute(
-                        new AddAccountCommand.SaveAccountInput(
+                        new AddAccountCommand.Input(
                                 input.getUsername(),
                                 input.getFirstName(),
                                 input.getLastName(),
@@ -31,7 +31,7 @@ public class RegisterDriverUseCase {
                 )
                 .flatMap(accountOutput ->
                         addDriverCommand.execute(
-                                new AddDriverCommand.SaveDriverInput(
+                                new AddDriverCommand.Input(
                                         accountOutput.getId(),
                                         input.getVehicleType()
                                 )
@@ -64,8 +64,8 @@ public class RegisterDriverUseCase {
         VehicleType vehicleType;
 
         public static RegisterDriverOutput of(
-                AddAccountCommand.SaveAccountOutput account,
-                AddDriverCommand.SaveDriverOutput driver
+                AddAccountCommand.Output account,
+                AddDriverCommand.Output driver
         ) {
             return new RegisterDriverOutput(
                     account.getId(),

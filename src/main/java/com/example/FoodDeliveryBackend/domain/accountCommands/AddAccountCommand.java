@@ -20,17 +20,17 @@ public class AddAccountCommand {
     private final AccountRepositoryPort accountRepositoryPort;
     private final KeycloakRegistrationPort keycloakRegistrationPort;
 
-    public Either<StructuredError, SaveAccountOutput> execute(SaveAccountInput input){
+    public Either<StructuredError, Output> execute(Input input){
         return keycloakRegistrationPort.registerCustomer(input)
                 .flatMap(ignored ->
                         accountRepositoryPort.save(input.toParams())
-                                .map(SaveAccountOutput::of)
+                                .map(Output::of)
                 );
     }
 
 
     @Value
-    public static class SaveAccountInput{
+    public static class Input{
 
         String username;
         String firstName;
@@ -47,7 +47,7 @@ public class AddAccountCommand {
     }
 
     @Value
-    public static class SaveAccountOutput{
+    public static class Output{
 
         UUID id;
         String username;
@@ -57,8 +57,8 @@ public class AddAccountCommand {
         String email;
         Roles role;
 
-        private static SaveAccountOutput of(AccountDomain domain){
-            return new SaveAccountOutput(domain.getId(),domain.getUsername(), domain.getFirstName(),domain.getLastName(),
+        private static Output of(AccountDomain domain){
+            return new Output(domain.getId(),domain.getUsername(), domain.getFirstName(),domain.getLastName(),
                     domain.getPhone(), domain.getEmail(), domain.getRole());
         }
 
